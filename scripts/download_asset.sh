@@ -1,10 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-INPUT=$(cat)
 
-DOWNLOAD_URL=$(echo "$INPUT" | grep -o '"url"[[:space:]]*:[[:space:]]*"[^"]*"'  | sed 's/.*: *"\([^"]*\)"/\1/')
-OUTPUT_PATH=$(echo "$INPUT" | grep -o '"path"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"\([^"]*\)"/\1/')
+DOWNLOAD_URL="$1"
+OUTPUT_PATH="$2"
 
 if [[ -z "$DOWNLOAD_URL" || -z "$OUTPUT_PATH" ]]; then
   echo "{\"error\": \"Missing required fields: url or path\"}"

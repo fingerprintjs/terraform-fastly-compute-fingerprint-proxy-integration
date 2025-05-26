@@ -11,6 +11,21 @@ variable "test_domain_name" {
   default = ""
 }
 
+variable "integration_name" {
+  type = string
+  default = "fingerprint-fastly-compute-proxy-integration"
+}
+
+variable "config_store_prefix" {
+  type = string
+  default = "Fingerprint_Compute_Config_Store_"
+}
+
+variable "secret_store_prefix" {
+  type = string
+  default = "Fingerprint_Compute_Secret_Store_"
+}
+
 variable "repository_organization_name" {
   type    = string
   default = "fingerprintjs"

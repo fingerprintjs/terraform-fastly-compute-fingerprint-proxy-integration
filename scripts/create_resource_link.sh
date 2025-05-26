@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-INPUT=$(cat)
-
 SERVICE_ID="$1"
 VERSION="$2"
 RESOURCE_ID="$3"

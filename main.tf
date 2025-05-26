@@ -16,14 +16,15 @@ provider "fastly" {
 }
 
 resource "fastly_service_compute" "fingerprint_integration" {
-  name = "fingerprint-fastly-compute-proxy-integration"
+  name = var.integration_name
 
   domain {
     name = var.integration_domain
   }
 
   domain {
-    name = "orkunfpjstest4.edgecompute.app"
+    for_each = var.test_domain_name == "" ? [] : [0]
+    name = "${var.test_domain_name}.edgecompute.app"
   }
 
   package {
@@ -66,7 +67,7 @@ resource "fastly_service_compute" "fingerprint_integration" {
 }
 
 resource "fastly_configstore" "integration_config_store" {
-  name = "Fingerprint_Compute_Config_Store_${fastly_service_compute.fingerprint_integration.id}"
+  name = "${var.config_store_prefix}${fastly_service_compute.fingerprint_integration.id}"
 }
 
 resource "fastly_configstore_entries" "integration_config_store_entries" {
@@ -78,7 +79,7 @@ resource "fastly_configstore_entries" "integration_config_store_entries" {
 }
 
 resource "fastly_secretstore" "integration_secret_store" {
-  name = "Fingerprint_Compute_Secret_Store_${fastly_service_compute.fingerprint_integration.id}"
+  name = "${var.secret_store_prefix}${fastly_service_compute.fingerprint_integration.id}"
 }
 
 resource "null_resource" "add_proxy_secret" {

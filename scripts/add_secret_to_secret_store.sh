@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-INPUT=$(cat)
-
 STORE_ID="$1"
 SECRET_NAME="$2"
 SECRET_VALUE="$3"

@@ -1,0 +1,3 @@
+fastly_api_key = ""
+integration_domain = "metrics.yourdomain.com"
+main_host = "origin.yourdomain.com"
