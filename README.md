@@ -5,7 +5,7 @@ Run `terraform plan`
 Run `terraform apply`
 
 
-To say, run these in order:
+To destroy, run these in order:
 ```shell
 terraform state rm restapi_object.link_config_store \
 terraform state rm restapi_object.link_secret_store \
