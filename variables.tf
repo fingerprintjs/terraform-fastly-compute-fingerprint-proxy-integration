@@ -26,33 +26,8 @@ variable "secret_store_prefix" {
   default = "Fingerprint_Compute_Secret_Store_"
 }
 
-variable "repository_organization_name" {
-  type    = string
-  default = "fingerprintjs"
-}
-
-variable "repository_name" {
-  type    = string
-  default = "fingerprint-pro-fastly-compute-proxy-integration"
-}
-
-variable "compute_asset_name" {
-  type    = string
-  default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
-}
-
-variable "asset_version_min" {
-  type    = string
-  default = "latest"
-}
-
 variable "fastly_api_key" {
   type = string
-}
-
-variable "integration_path" {
-  type = string
-  default = "integration"
 }
 
 variable "agent_script_download_path" {
@@ -68,4 +43,29 @@ variable "get_result_path" {
 variable "proxy_secret" {
   type = string
   default = "secret"
+}
+
+variable "repository_organization_name" {
+  type    = string
+  default = "fingerprintjs"
+}
+
+variable "repository_name" {
+  type    = string
+  default = "fingerprint-pro-fastly-compute-proxy-integration"
+}
+
+variable "asset_version_min" {
+  type    = string
+  default = "latest"
+}
+
+variable "compute_asset_name" {
+  type    = string
+  default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+}
+
+variable "activate_service" {
+  type        = bool
+  default     = false
 }
