@@ -1,3 +1,9 @@
 fastly_api_key = ""
 integration_domain = "metrics.yourdomain.com"
 main_host = "origin.yourdomain.com"
+get_result_path = "result"
+agent_script_download_path = "agent"
+proxy_secret = ""
+service_id = ""
+download_asset = true
+compute_asset_name = "fingerprint-fastly-compute-proxy-integration.tar.gz"

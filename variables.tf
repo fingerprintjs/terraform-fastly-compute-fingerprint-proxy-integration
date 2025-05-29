@@ -65,7 +65,11 @@ variable "compute_asset_name" {
   default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
 }
 
-variable "activate_service" {
-  type        = bool
-  default     = false
+variable "service_id" {
+  type = string
+}
+
+variable "download_asset" {
+  type = bool
+  default = true
 }

@@ -39,11 +39,3 @@ data "local_file" "compute_asset" {
   filename = "${path.cwd}/assets/${var.compute_asset_name}"
   depends_on = [get_artifact.download_asset]
 }
-
-output "filename" {
-  value = data.local_file.compute_asset.filename
-}
-
-output "full_path" {
-  value = abspath(data.local_file.compute_asset.filename)
-}
