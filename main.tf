@@ -85,13 +85,6 @@ resource "fastly_service_compute" "fingerprint_integration" {
     name = var.integration_domain
   }
 
-  dynamic "domain" {
-    for_each = var.test_domain_name == "" ? [] : [0]
-    content {
-      name = "${var.test_domain_name}.edgecompute.app"
-    }
-  }
-
   package {
     filename         = local.asset_path
     source_code_hash = local.asset_hash

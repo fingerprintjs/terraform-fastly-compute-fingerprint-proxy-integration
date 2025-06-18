@@ -6,11 +6,6 @@ variable "main_host" {
   type = string
 }
 
-variable "test_domain_name" {
-  type = string
-  default = ""
-}
-
 variable "integration_name" {
   type = string
   default = "fingerprint-fastly-compute-proxy-integration"
