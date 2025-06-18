@@ -4,10 +4,6 @@ terraform {
       source  = "integrations/github"
       version = "6.2.2"
     }
-    get = {
-      source  = "cludden/get"
-      version = "0.1.2"
-    }
   }
 }
 
@@ -22,20 +18,21 @@ locals {
     for asset in data.github_release.selected.assets :
     asset.browser_download_url
     if asset.name == var.compute_asset_name
-  ][
-  0
-  ]
+  ][0]
+
+  compute_asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
 }
 
-resource "get_artifact" "download_asset" {
-  url     = local.compute_download_url
-  dest    = "${path.cwd}/assets/${var.compute_asset_name}"
-  mode    = "file"
-  archive = false
-  workdir = abspath(path.root)
+resource "null_resource" "download_asset" {
+  provisioner "local-exec" {
+    command = <<EOT
+      mkdir -p "${path.cwd}/assets"
+      curl -L -o "${local.compute_asset_path}" "${local.compute_download_url}"
+    EOT
+  }
 }
 
 data "local_file" "compute_asset" {
-  filename = "${path.cwd}/assets/${var.compute_asset_name}"
-  depends_on = [get_artifact.download_asset]
+  filename   = local.compute_asset_path
+  depends_on = [null_resource.download_asset]
 }

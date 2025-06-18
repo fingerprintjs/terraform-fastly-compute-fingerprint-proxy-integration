@@ -42,7 +42,7 @@ variable "get_result_path" {
 
 variable "proxy_secret" {
   type = string
-  default = "secret"
+  sensitive = true
 }
 
 variable "repository_organization_name" {
@@ -72,4 +72,33 @@ variable "service_id" {
 variable "download_asset" {
   type = bool
   default = true
+}
+
+variable "fpjs_backend_url" {
+  type = string
+  default = "api.fpjs.io"
+}
+
+variable "fpjs_cdn_url" {
+  type = string
+  default = "fpcdn.io"
+}
+
+variable "kv_store_enabled" {
+  type = bool
+  default = false
+}
+
+variable "kv_store_save_plugin_enabled" {
+  type = string
+  default = "false"
+  validation {
+    condition = var.kv_store_save_plugin_enabled == "true" || var.kv_store_save_plugin_enabled == "false"
+    error_message = "The kv_store_save_plugin_enabled variable should either string `true` or string `false`"
+  }
+}
+
+variable "kv_store_prefix" {
+  type = string
+  default = "Fingerprint_Results_"
 }
