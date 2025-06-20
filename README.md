@@ -1,6 +1,6 @@
 # Prerequisites
 
-* Create a `terraform.tfvars` file, fill your `fastly_api_key`, `integration_domain`, `main_host`, `get_result_path`, `agent_script_download_path`, `proxy_secret`
+* Create a `terraform.tfvars` file, fill your `fastly_api_key`, `integration_domain`, `main_host`, `get_result_path`, `agent_script_download_path`
 * Create an empty Fastly Compute service and copy the id
 * Paste the id in `terraform.tfvars` file like this:
 ```terraform
@@ -34,6 +34,9 @@ terraform import fastly_service_compute.fingerprint_integration "<your_service_i
 terraform apply
 ```
 
+> After you deployed your service via terraform, you need to add Secret Store item with key PROXY_SECRET
+> to Secret Store created via Terraform and fill your value. This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section.
+
 # Destroy
 
 To destroy, run this:
@@ -45,8 +48,4 @@ terraform destroy
 
 * In our implementation for Fastly Compute, we support multiple proxy integrations in one account, in order to do this, we bind store names with compute service id.
 To apply this on terraform, we run in to cyclical dependency problem. In order to fix this, we rely on already created empty service and its ID.
-* Fastly Terraform Provider officially doesn't support storing secret items via terraform.
-So we are using MasterCard's RestApi provider to put our `PROXY_SECRET`.
 * If you use your own custom asset, then you need to maintain your asset's version on your own!
-* If you use plugin system for Fastly Compute Proxy Integration, this module doesn't support KV Store yet! It'll be implemented in the future
-* This module doesn't create TLS certificate for your service yet! It'll be implemented in the future

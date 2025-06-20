@@ -35,11 +35,6 @@ variable "get_result_path" {
   default = "result"
 }
 
-variable "proxy_secret" {
-  type = string
-  sensitive = true
-}
-
 variable "repository_organization_name" {
   type    = string
   default = "fingerprintjs"

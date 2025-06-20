@@ -4,6 +4,5 @@ main_host = "metrics-origin.mydomain.com" # Set here to something like metrics-o
 integration_path = "" # Main path to serve this proxy integration from. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
 agent_script_download_path = "" # Fingerprint Javascript Agent download path. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
 get_result_path = "" # Fingerprint Identification endpoint path. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
-proxy_secret = "" # Obtain this proxy secret from fingerprint.com dashboard
 kv_store_enabled = true # Enable KV Store service deployment
 kv_store_save_plugin_enabled = "true" # Enable Fingerprint's builtin KV Store Open Client Response plugin

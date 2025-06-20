@@ -4,25 +4,11 @@ terraform {
       source  = "fastly/fastly"
       version = ">= 7.0.0"
     }
-    restapi = {
-      source  = "Mastercard/restapi"
-      version = "2.0.1"
-    }
   }
 }
 
 provider "fastly" {
   api_key = var.fastly_api_key
-}
-
-provider "restapi" {
-  uri = "https://api.fastly.com"
-  headers = {
-    "Fastly-Key" = var.fastly_api_key
-  }
-  id_attribute         = "id"
-  write_returns_object = true
-  copy_keys = ["id"]
 }
 
 module "compute_asset" {
@@ -66,16 +52,6 @@ resource "fastly_configstore_entries" "integration_config_store_entries" {
 
 resource "fastly_secretstore" "integration_secret_store" {
   name = local.secret_store_name
-}
-
-resource "restapi_object" "add_proxy_secret" {
-  data = jsonencode({ "name" = "PROXY_SECRET", "secret" = base64encode(var.proxy_secret) })
-  path          = "/resources/stores/secret/${fastly_secretstore.integration_secret_store.id}/secrets"
-  depends_on = [fastly_secretstore.integration_secret_store]
-  object_id     = "PROXY_SECRET"
-  lifecycle {
-    ignore_changes = all
-  }
 }
 
 resource "fastly_service_compute" "fingerprint_integration" {
@@ -142,7 +118,7 @@ resource "fastly_service_compute" "fingerprint_integration" {
 
   depends_on = [
     fastly_configstore.integration_config_store, fastly_configstore_entries.integration_config_store_entries,
-    fastly_secretstore.integration_secret_store, restapi_object.add_proxy_secret
+    fastly_secretstore.integration_secret_store
   ]
 }
 
