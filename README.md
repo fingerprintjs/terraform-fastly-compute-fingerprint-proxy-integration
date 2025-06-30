@@ -1,6 +1,6 @@
 # Prerequisites
 
-* Create a `terraform.tfvars` file, fill your `fastly_api_key`, `integration_domain`, `main_host`, `get_result_path`, `agent_script_download_path`
+* Create a `terraform.tfvars` file, fill your `fastly_api_key`, `integration_domain`, `get_result_path`, `agent_script_download_path`
 * Create an empty Fastly Compute service and copy the id
 * Paste the id in `terraform.tfvars` file like this:
 ```terraform

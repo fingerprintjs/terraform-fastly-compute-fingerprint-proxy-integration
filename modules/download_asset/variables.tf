@@ -8,7 +8,7 @@ variable "repository_name" {
   default = "fingerprint-pro-fastly-compute-proxy-integration"
 }
 
-variable "asset_version_min" {
+variable "asset_version" {
   type    = string
   default = "latest"
 }

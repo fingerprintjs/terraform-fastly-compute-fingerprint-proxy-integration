@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">=1.5"
   required_providers {
     fastly = {
       source  = "fastly/fastly"
@@ -14,10 +15,10 @@ provider "fastly" {
 module "compute_asset" {
   count                        = var.download_asset ? 1 : 0
   source                       = "./modules/download_asset"
-  asset_version_min            = var.asset_version_min
+  asset_version            = var.asset_version
   compute_asset_name           = var.compute_asset_name
-  repository_name              = var.repository_name
-  repository_organization_name = var.repository_organization_name
+  repository_name              = var.asset_repository_name
+  repository_organization_name = var.asset_repository_organization_name
 }
 
 locals {

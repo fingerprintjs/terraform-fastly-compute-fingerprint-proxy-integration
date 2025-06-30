@@ -10,7 +10,7 @@ terraform {
 data "github_release" "selected" {
   repository  = var.repository_name
   owner       = var.repository_organization_name
-  retrieve_by = var.asset_version_min
+  retrieve_by = var.asset_version
 }
 
 locals {
