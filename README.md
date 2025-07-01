@@ -1,19 +1,30 @@
 # Prerequisites
-
-* Create a `terraform.tfvars` file, fill your `fastly_api_key`, `integration_domain`, `get_result_path`, `agent_script_download_path`
-* Create an empty Fastly Compute service and copy the id
-* Paste the id in `terraform.tfvars` file like this:
+* Create an empty compute service on Fastly and copy its ID.
+* Copy your Fastly API Key
+* Create your own terraform folder and create main.tf file
+* Fill the file like this:
 ```terraform
-service_id = "<your_service_id>"
+terraform {
+  required_version = ">=1.5"
+}
+
+module "compute" {
+  source                     = "github.com/fingerprintjs/temp-fastly-compute-terraform"
+  fastly_api_key             = "<your fastly api key>"
+  integration_domain         = "<your domain to serve fingerprint integration>"
+  service_id                 = "<your empty fastly compute service id>"
+  agent_script_download_path = "<random path like this: qwe123>"
+  get_result_path            = "<random path like this: asd987>"
+}
 ```
+* Run `terraform init`
   
 # Deploy
 
-After filling `terraform.tfvars` file, run these in order:
+Run these commands in order
 ```shell
-terraform init
-terraform apply -target=module.compute_asset
-terraform import fastly_service_compute.fingerprint_integration "<your_service_id>"
+terraform apply -target=module.compute.module.compute_asset
+terraform import module.compute.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
 terraform apply
 ```
 
@@ -21,7 +32,7 @@ terraform apply
 
 If you want to use your own asset instead of downloading latest follow these steps:
 
-Place your custom asset in `<project_root>/assets/custom-asset.tar.gz` and then edit your `terraform.tfvars` file, and add these 2 variables:
+Place your custom asset in `<your_module_root>/assets/custom-asset.tar.gz` and then edit your `main.tf` file, and add these 2 variables inside "compute" module block:
 ```terraform
 download_asset = false
 compute_asset_name = "custom-asset.tar.gz"
@@ -30,7 +41,7 @@ compute_asset_name = "custom-asset.tar.gz"
 Run these commands:
 ```shell
 terraform init
-terraform import fastly_service_compute.fingerprint_integration "<your_service_id>"
+terraform import module.compute.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
 terraform apply
 ```
 

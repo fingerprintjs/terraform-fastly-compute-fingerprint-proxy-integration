@@ -3,7 +3,7 @@ terraform {
   required_providers {
     fastly = {
       source  = "fastly/fastly"
-      version = ">= 7.0.0"
+      version = ">= 7.1.0"
     }
   }
 }
@@ -71,24 +71,44 @@ resource "fastly_service_compute" "fingerprint_integration" {
     address       = var.fpjs_backend_url
     name          = var.fpjs_backend_url
     override_host = var.fpjs_backend_url
+    prefer_ipv6 = false
+    use_ssl = true
+    ssl_cert_hostname = var.fpjs_backend_url
+    ssl_sni_hostname = var.fpjs_backend_url
+    port = 443
   }
 
   backend {
     address       = "eu.${var.fpjs_backend_url}"
     name          = "eu.${var.fpjs_backend_url}"
     override_host = "eu.${var.fpjs_backend_url}"
+    prefer_ipv6 = false
+    use_ssl = true
+    ssl_cert_hostname = "eu.${var.fpjs_backend_url}"
+    ssl_sni_hostname = "eu.${var.fpjs_backend_url}"
+    port = 443
   }
 
   backend {
     address       = "ap.${var.fpjs_backend_url}"
     name          = "ap.${var.fpjs_backend_url}"
     override_host = "ap.${var.fpjs_backend_url}"
+    prefer_ipv6 = false
+    use_ssl = true
+    ssl_cert_hostname = "ap.${var.fpjs_backend_url}"
+    ssl_sni_hostname = "ap.${var.fpjs_backend_url}"
+    port = 443
   }
 
   backend {
     address       = var.fpjs_cdn_url
     name          = var.fpjs_cdn_url
     override_host = var.fpjs_cdn_url
+    prefer_ipv6 = false
+    use_ssl = true
+    ssl_cert_hostname = var.fpjs_cdn_url
+    ssl_sni_hostname = var.fpjs_cdn_url
+    port = 443
   }
 
   resource_link {
