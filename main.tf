@@ -12,17 +12,18 @@ provider "fastly" {
   api_key = var.fastly_api_key
 }
 
+locals {
+  asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
+}
+
 module "compute_asset" {
   count                        = var.download_asset ? 1 : 0
   source                       = "./modules/download_asset"
-  asset_version            = var.asset_version
+  asset_version                = var.asset_version
   compute_asset_name           = var.compute_asset_name
   repository_name              = var.asset_repository_name
   repository_organization_name = var.asset_repository_organization_name
-}
-
-locals {
-  asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
+  asset_download_path          = local.asset_path
 }
 
 locals {
@@ -68,47 +69,47 @@ resource "fastly_service_compute" "fingerprint_integration" {
   }
 
   backend {
-    address       = var.fpjs_backend_url
-    name          = var.fpjs_backend_url
-    override_host = var.fpjs_backend_url
-    prefer_ipv6 = false
-    use_ssl = true
+    address           = var.fpjs_backend_url
+    name              = var.fpjs_backend_url
+    override_host     = var.fpjs_backend_url
+    prefer_ipv6       = false
+    use_ssl           = true
     ssl_cert_hostname = var.fpjs_backend_url
-    ssl_sni_hostname = var.fpjs_backend_url
-    port = 443
+    ssl_sni_hostname  = var.fpjs_backend_url
+    port              = 443
   }
 
   backend {
-    address       = "eu.${var.fpjs_backend_url}"
-    name          = "eu.${var.fpjs_backend_url}"
-    override_host = "eu.${var.fpjs_backend_url}"
-    prefer_ipv6 = false
-    use_ssl = true
+    address           = "eu.${var.fpjs_backend_url}"
+    name              = "eu.${var.fpjs_backend_url}"
+    override_host     = "eu.${var.fpjs_backend_url}"
+    prefer_ipv6       = false
+    use_ssl           = true
     ssl_cert_hostname = "eu.${var.fpjs_backend_url}"
-    ssl_sni_hostname = "eu.${var.fpjs_backend_url}"
-    port = 443
+    ssl_sni_hostname  = "eu.${var.fpjs_backend_url}"
+    port              = 443
   }
 
   backend {
-    address       = "ap.${var.fpjs_backend_url}"
-    name          = "ap.${var.fpjs_backend_url}"
-    override_host = "ap.${var.fpjs_backend_url}"
-    prefer_ipv6 = false
-    use_ssl = true
+    address           = "ap.${var.fpjs_backend_url}"
+    name              = "ap.${var.fpjs_backend_url}"
+    override_host     = "ap.${var.fpjs_backend_url}"
+    prefer_ipv6       = false
+    use_ssl           = true
     ssl_cert_hostname = "ap.${var.fpjs_backend_url}"
-    ssl_sni_hostname = "ap.${var.fpjs_backend_url}"
-    port = 443
+    ssl_sni_hostname  = "ap.${var.fpjs_backend_url}"
+    port              = 443
   }
 
   backend {
-    address       = var.fpjs_cdn_url
-    name          = var.fpjs_cdn_url
-    override_host = var.fpjs_cdn_url
-    prefer_ipv6 = false
-    use_ssl = true
+    address           = var.fpjs_cdn_url
+    name              = var.fpjs_cdn_url
+    override_host     = var.fpjs_cdn_url
+    prefer_ipv6       = false
+    use_ssl           = true
     ssl_cert_hostname = var.fpjs_cdn_url
-    ssl_sni_hostname = var.fpjs_cdn_url
-    port = 443
+    ssl_sni_hostname  = var.fpjs_cdn_url
+    port              = 443
   }
 
   resource_link {

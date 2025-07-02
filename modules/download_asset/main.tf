@@ -20,7 +20,7 @@ locals {
     if asset.name == var.compute_asset_name
   ][0]
 
-  compute_asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
+  compute_asset_path = var.asset_download_path
 }
 
 resource "null_resource" "download_asset" {
