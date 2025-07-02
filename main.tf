@@ -131,12 +131,6 @@ resource "fastly_service_compute" "fingerprint_integration" {
 
   force_destroy = true
 
-  lifecycle {
-    ignore_changes = [
-      package[0].source_code_hash
-    ]
-  }
-
   depends_on = [
     fastly_configstore.integration_config_store, fastly_configstore_entries.integration_config_store_entries,
     fastly_secretstore.integration_secret_store
