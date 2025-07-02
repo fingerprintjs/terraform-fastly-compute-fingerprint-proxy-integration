@@ -8,7 +8,7 @@ terraform {
   required_version = ">=1.5"
 }
 
-module "compute" {
+module "fingerprint_fastly_compute_integration" {
   source                     = "github.com/fingerprintjs/temp-fastly-compute-terraform"
   fastly_api_key             = "<your fastly api key>"
   integration_domain         = "<your domain to serve fingerprint integration>"
@@ -23,8 +23,8 @@ module "compute" {
 
 Run these commands in order
 ```shell
-terraform apply -target=module.compute.module.compute_asset
-terraform import module.compute.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
+terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset
+terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
 terraform apply
 ```
 
@@ -41,7 +41,7 @@ compute_asset_name = "custom-asset.tar.gz"
 Run these commands:
 ```shell
 terraform init
-terraform import module.compute.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
+terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
 terraform apply
 ```
 
