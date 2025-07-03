@@ -14,6 +14,11 @@ provider "fastly" {
 
 locals {
   asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
+  asset_hash = try(filebase64sha512(local.asset_path), "")
+  config_store_name       = "${var.config_store_prefix}${var.service_id}"
+  secret_store_name       = "${var.secret_store_prefix}${var.service_id}"
+  kv_store_name           = "${var.kv_store_prefix}${var.service_id}"
+  kv_store_plugin_enabled = var.kv_store_enabled ? var.kv_store_save_plugin_enabled : "false"
 }
 
 module "compute_asset" {
@@ -24,14 +29,6 @@ module "compute_asset" {
   repository_name              = var.asset_repository_name
   repository_organization_name = var.asset_repository_organization_name
   asset_download_path          = local.asset_path
-}
-
-locals {
-  asset_hash = try(filebase64sha512(local.asset_path), "")
-  config_store_name       = "${var.config_store_prefix}${var.service_id}"
-  secret_store_name       = "${var.secret_store_prefix}${var.service_id}"
-  kv_store_name           = "${var.kv_store_prefix}${var.service_id}"
-  kv_store_plugin_enabled = var.kv_store_enabled ? var.kv_store_save_plugin_enabled : "false"
 }
 
 resource "fastly_kvstore" "integration_kv_store" {
