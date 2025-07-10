@@ -11,6 +11,7 @@ severity:
 scan:
   skip-dirs:
     - assets/
+    - examples/
 
 config:
   misconfig-scanners: Terraform

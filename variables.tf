@@ -33,7 +33,7 @@ variable "secret_store_prefix" {
   }
 }
 
-variable "fastly_api_key" {
+variable "fastly_api_token" {
   type = string
   nullable = false
 }

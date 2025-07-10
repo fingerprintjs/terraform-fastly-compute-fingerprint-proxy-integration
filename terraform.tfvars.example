@@ -1,4 +1,4 @@
-fastly_api_key = "" # Your Fastly API Key comes here
+fastly_api_token = "" # Your Fastly API Token comes here
 integration_domain = "metrics.mydomain.com" # Set here to the subdomain you have chosen for the integration, for example metrics.yourwebsite.com. Avoid terms commonly blocked by ad blockers like fingerprint, fpjs, etc.
 integration_path = "" # Main path to serve this proxy integration from. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
 agent_script_download_path = "" # Fingerprint Javascript Agent download path. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
