@@ -18,6 +18,24 @@ module "fingerprint_fastly_compute_integration" {
 }
 ```
 * Run `terraform init`
+
+The properties you see here come from the Fingerprint module's variables, you can see the full list of properties below:
+
+| Variable                       | Description                                             | Required | Example                                                 |
+|--------------------------------|---------------------------------------------------------|----------|---------------------------------------------------------|
+| `fastly_api_token`             | Your Fastly API token                                   | Required | `"ABC123...xyz"`                                        |
+| `integration_domain`           | Domain used for your proxy integration                  | Required | `"metrics.yourdomain.com"`                              |
+| `service_id`                   | ID of your empty Fastly Compute service                 | Required | `"SU1Z0isxPaozGVKXdv0eY"`                               |
+| `agent_script_download_path`   | Path to serve agent script from your domain             | Required | `"4fs80xgx"`                                            |
+| `get_result_path`              | Path to serve identification and browser cache requests | Required | `"vpyr9bev"`                                            |
+| `integration_name`             | Name of Fastly service                                  | Optional | `"fingerprint-fastly-compute-proxy-integration"`        |
+| `download_asset`               | Whether to auto-download latest release                 | Optional | `true`                                                  |
+| `compute_asset_name`           | Custom filename if not downloading                      | Optional | `"fingerprint-fastly-compute-proxy-integration.tar.gz"` |
+| `asset_version`                | GitHub release version of proxy integration             | Optional | `"latest"`                                              |
+| `kv_store_enabled`             | Enable KV store integration                             | Optional | `false`                                                 |
+| `kv_store_save_plugin_enabled` | Enables plugin to save to KV store                      | Optional | `"false"`                                               |
+| `fpjs_backend_url`             | Domain for Ingress endpoint & browser cache endpoint    | Optional | `"api.fpjs.io"`                                         |
+| `fpjs_cdn_url`                 | Domain for Agent Script                                 | Optional | `"fpcdn.io"`                                            |
   
 # Deploy
 
