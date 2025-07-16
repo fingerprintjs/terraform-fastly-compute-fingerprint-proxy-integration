@@ -8,6 +8,9 @@ Learn more in the [Fastly Compute Proxy Terraform installation guide](https://de
 To quickly run the example for testing purposes, you can:
 
 1. Copy the [terraform.tfvars.example](./terraform.tfvars.example) file into a new `terraform.tfvars` file and replace the values with your own. The variables are defined and described in the [variables.tf](./variables.tf) file
+    ```shell 
+    cd examples/minimal && cp terraform.tfvars.example terraform.tfvars
+    ```
 2. Copy your Fastly API token
 3. Create an empty compute service on Fastly and copy its ID
 4. Run `terraform init`
