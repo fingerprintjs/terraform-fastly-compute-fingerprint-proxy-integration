@@ -1,8 +1,44 @@
-# Prerequisites
-* Create an empty compute service on Fastly and copy its ID.
-* Copy your Fastly API token
-* Create your own terraform folder and create main.tf file
-* Fill the file like this:
+<p align="center">
+<a href="https://fingerprint.com">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://fingerprintjs.github.io/home/resources/logo_light.svg" />
+<source media="(prefers-color-scheme: light)" srcset="https://fingerprintjs.github.io/home/resources/logo_dark.svg" />
+<img src="https://fingerprintjs.github.io/home/resources/logo_dark.svg" alt="Fingerprint logo" width="312px" />
+</picture>
+</a>
+</p>
+
+# Fingerprint Pro Fastly Compute Integration (Terraform module)
+
+[Fingerprint](https://fingerprint.com/) is a device intelligence platform offering industry-leading accuracy.
+
+Fingerprint Pro Fastly Compute Integration is responsible for
+
+- Proxying download requests of the latest Fingerprint Pro JS Agent between your site and Fingerprint CDN.
+- Proxying identification requests and responses between your site and Fingerprint Pro's APIs.
+
+This [improves](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration#the-benefits-of-using-the-fastly-compute-proxy-integration) both accuracy and reliability of visitor identification and bot detection on your site.
+
+You can install the Fastly Compute proxy integration [manually](https://dev.fingerprint.com/docs/deploy-fastly-compute-manually) or as [a Terraform module](https://registry.terraform.io/modules/fingerprintjs/fingerprint-fastly-proxy-integration/compute/latest) included in this repository. For more details, see the [full documentation](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration).
+
+## Requirements
+
+- [Fastly](https://www.fastly.com/signup) Account
+- [Terraform CLI](https://developer.hashicorp.com/terraform/install).
+- An [empty Fastly Compute Service](https://manage.fastly.com/compute/new) ID
+- [Fastly API Token](https://manage.fastly.com/account/tokens)
+
+> [!IMPORTANT]  
+> The Fastly Compute Proxy Integration is exclusively supported for customers on the Enterprise Plan. Other customers are encouraged to use [Custom subdomain setup](https://dev.fingerprint.com/docs/custom-subdomain-setup) or [Cloudflare Proxy Integration](https://dev.fingerprint.com/docs/cloudflare-integration).
+
+> [!WARNING]  
+> The underlying data contract in the identification logic can change to keep up with browser updates. Using the Fastly Compute Proxy Integration might require occasional manual updates on your side. Ignoring these updates will lead to lower accuracy or service disruption.
+
+## Getting started
+
+- Create your own terraform folder and create main.tf file
+- Fill the file like this:
+
 ```terraform
 terraform {
   required_version = ">=1.5"
@@ -17,6 +53,7 @@ module "fingerprint_fastly_compute_integration" {
   get_result_path            = "<random path like this: asd987>"
 }
 ```
+
 * Run `terraform init`
 
 The properties you see here come from the Fingerprint module's variables, you can see the full list of properties below:
@@ -37,7 +74,7 @@ The properties you see here come from the Fingerprint module's variables, you ca
 | `fpjs_backend_url`             | Domain for Ingress endpoint & browser cache endpoint    | Optional | `"api.fpjs.io"`                                         |
 | `fpjs_cdn_url`                 | Domain for Agent Script                                 | Optional | `"fpcdn.io"`                                            |
   
-# Deploy
+## Deploy
 
 Run these commands in order
 ```shell
@@ -46,7 +83,7 @@ terraform import module.fingerprint_fastly_compute_integration.fastly_service_co
 terraform apply
 ```
 
-# Custom Package
+## Custom package
 
 If you want to use your own asset instead of downloading latest follow these steps:
 
@@ -66,14 +103,14 @@ terraform apply
 > After you deployed your service via terraform, you need to add Secret Store item with key PROXY_SECRET
 > to Secret Store created via Terraform and fill your value. This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section.
 
-# Destroy
+## Destroy
 
 To destroy, run this:
 ```shell
 terraform destroy
 ```
 
-# Limitations & Known Issues
+## Limitations
 
 * In our implementation for Fastly Compute, we support multiple proxy integrations in one account, in order to do this, we bind store names with compute service id.
 To apply this on terraform, we run in to cyclical dependency problem. In order to fix this, we rely on already created empty service and its ID.

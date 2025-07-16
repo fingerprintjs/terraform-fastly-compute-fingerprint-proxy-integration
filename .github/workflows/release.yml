@@ -1,0 +1,17 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+      - rc
+
+jobs:
+  build-and-release:
+    name: 'Build project, run CI checks and publish new release'
+    uses: fingerprintjs/dx-team-toolkit/.github/workflows/release-server-sdk.yml@v1
+    with:
+      language: terraform
+      language-version: 1.9.4
+      appId: ${{ vars.APP_ID }}
+    secrets:
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
