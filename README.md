@@ -86,7 +86,15 @@ The properties you see here come from the Fingerprint module's variables, you ca
 Run these commands in order
 ```shell
 terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset
-terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
+```
+
+```shell
+terraform import \
+  module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration \
+  "<your empty fastly compute service id>"
+```
+
+```shell
 terraform apply
 ```
 
@@ -109,6 +117,7 @@ terraform apply
 
 > After you deployed your service via terraform, you need to add Secret Store item with key PROXY_SECRET
 > to Secret Store created via Terraform and fill your value. This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section.
+> Please follow this guide for how to [add your proxy secret to your Fastly Secret Store](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step35-add-the-proxy-secret).
 
 ## Destroy
 
