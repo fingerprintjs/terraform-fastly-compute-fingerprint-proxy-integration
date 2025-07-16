@@ -31,3 +31,26 @@ Every PR should target `rc` branch first. Upon merge, if there are relevant chan
 When that happens, an automated PR is created to `main` branch, and E2E tests run against it. If the tests pass, the PR can be merged and the release is created.
 
 The integration is automatically released on every push to the main branch if there are relevant changes. The workflow must be approved by one of the maintainers, first.
+
+## How to test without DNS and TLS Setup
+
+To test terraform module on your Fastly Compute service, you can use Fastly subdomain `.edgecompute.app`. See example below:
+
+```terraform
+module "fingerprint_fastly_compute_integration" {
+  # ...
+  integration_domain = "my-test-subdomain.edgecompute.app" # <- Use subdomain here
+}
+```
+
+## How test using Fingerprint Staging Environment
+
+To test terraform module using Fingerprint's staging environment, you can alter origins like this:
+
+```terraform
+module "fingerprint_fastly_compute_integration" {
+  # ...
+  fpjs_backend_url = "api.stage.fpjs.sh" # <- Update Ingress origin here
+  fpjs_cdn_url = "procdn.fpjs.sh" # <- Update CDN origin here
+}
+```
