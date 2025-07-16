@@ -1,13 +1,11 @@
 variable "agent_script_download_path" {
   description = "The Fingerprint agent download will be proxied through this path"
   type = string
-  default = "agent"
 }
 
 variable "get_result_path" {
   description = "The Fingerprint agent download will be proxied through this path"
   type = string
-  default = "result"
 }
 
 variable "integration_domain" {
