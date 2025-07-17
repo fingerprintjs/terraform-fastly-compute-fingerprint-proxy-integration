@@ -19,10 +19,10 @@
 
 [Fingerprint](https://fingerprint.com/) is a device intelligence platform offering industry-leading accuracy.
 
-Fingerprint Pro Fastly Compute Integration is responsible for
+Fingerprint Fastly Compute Integration is responsible for
 
-- Proxying download requests of the latest Fingerprint Pro JS Agent between your site and Fingerprint CDN.
-- Proxying identification requests and responses between your site and Fingerprint Pro's APIs.
+- Proxying download requests of the latest Fingerprint JS Agent between your site and Fingerprint CDN.
+- Proxying identification requests and responses between your site and Fingerprint's APIs.
 
 This [improves](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration#the-benefits-of-using-the-fastly-compute-proxy-integration) both accuracy and reliability of visitor identification and bot detection on your site.
 
