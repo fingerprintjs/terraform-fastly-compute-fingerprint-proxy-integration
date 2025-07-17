@@ -43,7 +43,7 @@ You can install the Fastly Compute proxy integration [manually](https://dev.fing
 
 ## Getting started
 
-- Create your own terraform folder and create main.tf file
+- Create your own terraform folder and create a `main.tf` file.
 - Fill the file like this:
 
 ```terraform
