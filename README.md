@@ -32,7 +32,6 @@ You can install the Fastly Compute proxy integration [manually](https://dev.fing
 
 - [Fastly](https://www.fastly.com/signup) Account
 - [Terraform CLI](https://developer.hashicorp.com/terraform/install).
-- An [empty Fastly Compute Service](https://manage.fastly.com/compute/new) ID
 - [Fastly API Token](https://manage.fastly.com/account/tokens)
 
 > [!IMPORTANT]  
@@ -41,10 +40,15 @@ You can install the Fastly Compute proxy integration [manually](https://dev.fing
 > [!WARNING]  
 > The underlying data contract in the identification logic can change to keep up with browser updates. Using the Fastly Compute Proxy Integration might require occasional manual updates on your side. Ignoring these updates will lead to lower accuracy or service disruption.
 
-## 1. Install the Terraform module
+## How to install
 
-- Create your own terraform folder and create a `main.tf` file.
-- Fill the file like this:
+### 1. Create an empty Fastly Compute Service
+
+Create and empty Fastly Compute service, for example, using the [Fastly web interface](https://manage.fastly.com/compute/new). Note down the service ID.
+
+### 2. Install the Terraform module
+
+Add the module to your Terraform file (for example, `main.tf`) and configure it with your Fastly API token, [Fingerprint proxy secret](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration#step-1-create-a-fingerprint-proxy-secret), integration domain, and other required values: 
 
 ```terraform
 terraform {
@@ -53,25 +57,23 @@ terraform {
 
 module "fingerprint_fastly_compute_integration" {
   source                     = "github.com/fingerprintjs/temp-fastly-compute-terraform"
-  fastly_api_token             = "<your fastly api token>"
-  integration_domain         = "<your domain to serve fingerprint integration>"
-  service_id                 = "<your empty fastly compute service id>"
-  agent_script_download_path = "<random path like this: qwe123>"
-  get_result_path            = "<random path like this: asd987>"
+  fastly_api_token           = "FASTLY_API_TOKEN"
+  service_id                 = "EMPTY_FASTLY_COMPUTE_SERVICE_ID"
+  agent_script_download_path = "AGENT_SCRIPT_DOWNLOAD_PATH"
+  get_result_path            = "GET_RESULT_PATH"
+  integration_domain         = "metrics.yourwebsite.com"
 }
 ```
 
-* Run `terraform init`
-
-The properties you see here come from the Fingerprint module's variables, you can see the full list of properties below:
+You can see the full list of the Terraform module's variables below:
 
 | Variable                       | Description                                             | Required | Example                                                 |
 |--------------------------------|---------------------------------------------------------|----------|---------------------------------------------------------|
 | `fastly_api_token`             | Your Fastly API token                                   | Required | `"ABC123...xyz"`                                        |
-| `integration_domain`           | Domain used for your proxy integration                  | Required | `"metrics.yourdomain.com"`                              |
 | `service_id`                   | ID of your empty Fastly Compute service                 | Required | `"SU1Z0isxPaozGVKXdv0eY"`                               |
 | `agent_script_download_path`   | Path to serve agent script from your domain             | Required | `"4fs80xgx"`                                            |
 | `get_result_path`              | Path to serve identification and browser cache requests | Required | `"vpyr9bev"`                                            |
+| `integration_domain`           | Domain used for your proxy integration                  | Required | `"metrics.yourdomain.com"`                              |
 | `integration_name`             | Name of Fastly service                                  | Optional | `"fingerprint-fastly-compute-proxy-integration"`        |
 | `download_asset`               | Whether to auto-download latest release                 | Optional | `true`                                                  |
 | `compute_asset_name`           | Custom filename if not downloading                      | Optional | `"fingerprint-fastly-compute-proxy-integration.tar.gz"` |
@@ -81,34 +83,59 @@ The properties you see here come from the Fingerprint module's variables, you ca
 | `fpjs_backend_url`             | Domain for Ingress endpoint & browser cache endpoint    | Optional | `"api.fpjs.io"`                                         |
 | `fpjs_cdn_url`                 | Domain for Agent Script                                 | Optional | `"fpcdn.io"`                                            |
 
-## 2. Deploy your Terraform changes
+### 2. Deploy your Terraform changes
 
-Run these commands in order
-```shell
-terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset
-```
+1. Initialize the Terraform module
 
-```shell
-terraform import \
-  module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration \
-  "<your empty fastly compute service id>"
-```
+    ```shell
+    terraform init
+    ```
 
-```shell
-terraform apply
-```
+2. Apply the Compute Asset
 
-## Custom package
+    ```shell
+    terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset
+    ```
 
-If you need to use a custom prebuilt `.tar.gz` asset, rather than downloading the latest release, you can follow the [custom build guide](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#using-a-custom-build-optional).
+3. Import the Fastly service
 
-This is only necessary if you're using [Open Client Response](https://dev.fingerprint.com/docs/open-client-response), which requires [building your own package](https://dev.fingerprint.com/docs/using-open-client-response-with-fastly-compute-proxy-integration-plugins#make-your-own-plugin) with custom plugins.
+    ```shell
+    terraform import \
+      module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration \
+      "<your empty fastly compute service id>"
+    ```
 
-If you're not using Open Client Response, you can skip this section and continue to [3. Add the proxy secret](#3-add-the-proxy-secret).
+4. Apply the changes
 
-## 3. Add the proxy secret
+    ```shell
+    terraform apply
+    ```
+### 3. Add the proxy secret to your Fastly Secret Store
 
-After you deployed your service via terraform, you need to add Secret Store item with key `PROXY_SECRET` to Secret Store created via Terraform and fill your value. 
-This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section. 
-Please follow this guide for how to [add your proxy secret to your Fastly Secret Store](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step35-add-the-proxy-secret).
+1. Using the [Fastly web interface](https://manage.fastly.com/compute), open the Secret Store created for your service by Terraform. It will be named `Fingerprint_Compute_Secret_Store_<SERVICE_ID>`.
+2. Add a `PROXY_SECRET` item with your Fingerprint proxy secret as the value.
+
+## Using a Custom package
+ 
+To use your own  `.tar.gz` package instead of downloading the official release, please see [Using a custom build](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#using-a-custom-build-optional) in the full integration guide.
+
+This is only necessary if you're using [Open Client Response](https://dev.fingerprint.com/docs/open-client-response).
+
+## Examples
+
+This repository also includes an example Terraform project. Use this example only as a reference, and make sure to follow best practices when provisioning Fastly services:
+
+- [Minimal example](./examples/minimal/)
+
+## How to update
+
+The Terraform module does include any mechanism for automatic updates. To keep your integration up to date, please run `terraform apply` regularly.
+
+## More resources
+
+- [Documentation](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration)
+
+## License
+
+This project is licensed under the MIT license. See the [LICENSE](/LICENSE) file for more info.
 
