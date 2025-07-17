@@ -1,4 +1,4 @@
-# Contributing to Fingerprint Pro Fastly Compute Integration Terraform Module
+# Contributing to Fingerprint Fastly Compute Integration Terraform Module
 
 ## Working with code
 
