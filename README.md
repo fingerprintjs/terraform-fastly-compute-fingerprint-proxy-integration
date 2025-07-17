@@ -100,24 +100,17 @@ terraform apply
 
 ## Custom package
 
-If you want to use your own asset instead of downloading latest follow these steps:
+If you need to use a custom prebuilt `.tar.gz` asset, rather than downloading the latest release, you can follow the [custom build guide](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#using-a-custom-build-optional).
 
-Place your custom asset in `<your_module_root>/assets/custom-asset.tar.gz` and then edit your `main.tf` file, and add these 2 variables inside "compute" module block:
-```terraform
-download_asset = false
-compute_asset_name = "custom-asset.tar.gz"
-```
+This is only necessary if you're using [Open Client Response](https://dev.fingerprint.com/docs/open-client-response), which requires [building your own package](https://dev.fingerprint.com/docs/using-open-client-response-with-fastly-compute-proxy-integration-plugins#make-your-own-plugin) with custom plugins.
 
-Run these commands:
-```shell
-terraform init
-terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "<your empty fastly compute service id>"
-terraform apply
-```
+If you're not using Open Client Response, you can skip this section and continue to [3. Add the proxy secret](#3-add-the-proxy-secret).
 
-> After you deployed your service via terraform, you need to add Secret Store item with key PROXY_SECRET
-> to Secret Store created via Terraform and fill your value. This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section.
-> Please follow this guide for how to [add your proxy secret to your Fastly Secret Store](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step35-add-the-proxy-secret).
+## 3. Add the proxy secret
+
+After you deployed your service via terraform, you need to add Secret Store item with key `PROXY_SECRET` to Secret Store created via Terraform and fill your value. 
+This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section. 
+Please follow this guide for how to [add your proxy secret to your Fastly Secret Store](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step35-add-the-proxy-secret).
 
 ## Destroy
 
