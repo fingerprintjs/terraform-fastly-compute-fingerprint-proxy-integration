@@ -41,7 +41,7 @@ You can install the Fastly Compute proxy integration [manually](https://dev.fing
 > [!WARNING]  
 > The underlying data contract in the identification logic can change to keep up with browser updates. Using the Fastly Compute Proxy Integration might require occasional manual updates on your side. Ignoring these updates will lead to lower accuracy or service disruption.
 
-## Getting started
+## 1. Install the Terraform module
 
 - Create your own terraform folder and create a `main.tf` file.
 - Fill the file like this:
@@ -80,8 +80,8 @@ The properties you see here come from the Fingerprint module's variables, you ca
 | `kv_store_save_plugin_enabled` | Enables plugin to save to KV store                      | Optional | `"false"`                                               |
 | `fpjs_backend_url`             | Domain for Ingress endpoint & browser cache endpoint    | Optional | `"api.fpjs.io"`                                         |
 | `fpjs_cdn_url`                 | Domain for Agent Script                                 | Optional | `"fpcdn.io"`                                            |
-  
-## Deploy
+
+## 2. Deploy your Terraform changes
 
 Run these commands in order
 ```shell
