@@ -112,8 +112,3 @@ After you deployed your service via terraform, you need to add Secret Store item
 This approach is suggested by Fastly. For details please see [this link](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/secretstore) and check Note section. 
 Please follow this guide for how to [add your proxy secret to your Fastly Secret Store](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step35-add-the-proxy-secret).
 
-## Limitations
-
-* In our implementation for Fastly Compute, we support multiple proxy integrations in one account, in order to do this, we bind store names with compute service id.
-To apply this on terraform, we run in to cyclical dependency problem. In order to fix this, we rely on already created empty service and its ID.
-* If you use your own custom asset, then you need to maintain your asset's version on your own!
