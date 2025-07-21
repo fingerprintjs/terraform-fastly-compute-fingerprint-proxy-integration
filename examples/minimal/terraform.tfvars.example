@@ -1,5 +1,7 @@
-agent_script_download_path  = "463N7"
-get_result_path             = "r35U17"
+# Replace the values with your own, random paths recommended
+agent_script_download_path  = "agent"
+get_result_path             = "result"
 fastly_api_token            = "YOUR_API_TOKEN_CREATED_IN_FASTLY_DASHBOARD"
 service_id                  = "YOUR_EMPTY_FASTLY_COMPUTE_SERVICE_ID_CREATED_ON_FASTLY_DASHBOARD"
-integration_domain          = "metrics.yourwebsite.com"
+# Use your own test subdomain
+integration_domain          = "your-fingerprint-proxy-example.edgecompute.app"
