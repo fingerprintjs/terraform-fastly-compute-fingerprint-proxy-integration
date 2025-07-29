@@ -83,7 +83,7 @@ You can see the full list of the Terraform module's variables below:
 | `fpjs_backend_url`             | Domain for Ingress endpoint & browser cache endpoint    | Optional | `"api.fpjs.io"`                                         |
 | `fpjs_cdn_url`                 | Domain for Agent Script                                 | Optional | `"fpcdn.io"`                                            |
 
-### 2. Deploy your Terraform changes
+### 3. Deploy your Terraform changes
 
 1. Initialize the Terraform module
 
@@ -110,7 +110,7 @@ You can see the full list of the Terraform module's variables below:
     ```shell
     terraform apply
     ```
-### 3. Add the proxy secret to your Fastly Secret Store
+### 4. Add the proxy secret to your Fastly Secret Store
 
 1. Using the [Fastly web interface](https://manage.fastly.com/compute), open the Secret Store created for your service by Terraform. It will be named `Fingerprint_Compute_Secret_Store_<SERVICE_ID>`.
 2. Add a `PROXY_SECRET` item with your Fingerprint proxy secret as the value.
