@@ -42,6 +42,7 @@ resource "fastly_configstore" "integration_config_store" {
 
 resource "fastly_configstore_entries" "integration_config_store_entries" {
   store_id = fastly_configstore.integration_config_store.id
+  manage_entries = var.manage_fastly_config_store_entries
   entries = {
     AGENT_SCRIPT_DOWNLOAD_PATH      = var.agent_script_download_path
     GET_RESULT_PATH                 = var.get_result_path
