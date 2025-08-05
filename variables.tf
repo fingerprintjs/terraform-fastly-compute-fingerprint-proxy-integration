@@ -23,6 +23,13 @@ variable "config_store_prefix" {
   }
 }
 
+variable "manage_fastly_config_store_entries" {
+  type = bool
+  default = false
+  nullable = false
+  description = "Manage Fastly Config Store entries via terraform, see link: https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/configstore_entries#manage_entries-1"
+}
+
 variable "secret_store_prefix" {
   type = string
   default = "Fingerprint_Compute_Secret_Store_"

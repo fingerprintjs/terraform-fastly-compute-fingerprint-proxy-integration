@@ -67,23 +67,24 @@ module "fingerprint_fastly_compute_integration" {
 
 You can see the full list of the Terraform module's variables below:
 
-| Variable                       | Description                                             | Required | Example                                                 |
-|--------------------------------|---------------------------------------------------------|----------|---------------------------------------------------------|
-| `fastly_api_token`             | Your Fastly API token                                   | Required | `"ABC123...xyz"`                                        |
-| `service_id`                   | ID of your empty Fastly Compute service                 | Required | `"SU1Z0isxPaozGVKXdv0eY"`                               |
-| `agent_script_download_path`   | Path to serve agent script from your domain             | Required | `"4fs80xgx"`                                            |
-| `get_result_path`              | Path to serve identification and browser cache requests | Required | `"vpyr9bev"`                                            |
-| `integration_domain`           | Domain used for your proxy integration                  | Required | `"metrics.yourdomain.com"`                              |
-| `integration_name`             | Name of Fastly service                                  | Optional | `"fingerprint-fastly-compute-proxy-integration"`        |
-| `download_asset`               | Whether to auto-download latest release                 | Optional | `true`                                                  |
-| `compute_asset_name`           | Custom filename if not downloading                      | Optional | `"fingerprint-fastly-compute-proxy-integration.tar.gz"` |
-| `asset_version`                | GitHub release version of proxy integration             | Optional | `"latest"`                                              |
-| `kv_store_enabled`             | Enable KV store integration                             | Optional | `false`                                                 |
-| `kv_store_save_plugin_enabled` | Enables plugin to save to KV store                      | Optional | `"false"`                                               |
-| `fpjs_backend_url`             | Domain for Ingress endpoint & browser cache endpoint    | Optional | `"api.fpjs.io"`                                         |
-| `fpjs_cdn_url`                 | Domain for Agent Script                                 | Optional | `"fpcdn.io"`                                            |
+| Variable                             | Description                                                                                                                                                                                    | Required | Example                                                 |
+|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------------------------------------------------|
+| `fastly_api_token`                   | Your Fastly API token                                                                                                                                                                          | Required | `"ABC123...xyz"`                                        |
+| `service_id`                         | ID of your empty Fastly Compute service                                                                                                                                                        | Required | `"SU1Z0isxPaozGVKXdv0eY"`                               |
+| `agent_script_download_path`         | Path to serve agent script from your domain                                                                                                                                                    | Required | `"4fs80xgx"`                                            |
+| `get_result_path`                    | Path to serve identification and browser cache requests                                                                                                                                        | Required | `"vpyr9bev"`                                            |
+| `integration_domain`                 | Domain used for your proxy integration                                                                                                                                                         | Required | `"metrics.yourdomain.com"`                              |
+| `integration_name`                   | Name of Fastly service                                                                                                                                                                         | Optional | `"fingerprint-fastly-compute-proxy-integration"`        |
+| `download_asset`                     | Whether to auto-download latest release                                                                                                                                                        | Optional | `true`                                                  |
+| `compute_asset_name`                 | Custom filename if not downloading                                                                                                                                                             | Optional | `"fingerprint-fastly-compute-proxy-integration.tar.gz"` |
+| `asset_version`                      | GitHub release version of proxy integration                                                                                                                                                    | Optional | `"latest"`                                              |
+| `kv_store_enabled`                   | Enable KV store integration                                                                                                                                                                    | Optional | `false`                                                 |
+| `kv_store_save_plugin_enabled`       | Enables plugin to save to KV store                                                                                                                                                             | Optional | `"false"`                                               |
+| `fpjs_backend_url`                   | Domain for Ingress endpoint & browser cache endpoint                                                                                                                                           | Optional | `"api.fpjs.io"`                                         |
+| `fpjs_cdn_url`                       | Domain for Agent Script                                                                                                                                                                        | Optional | `"fpcdn.io"`                                            |
+| `manage_fastly_config_store_entries` | Manage Fastly Config Store entries via terraform, see [Fastly documentation](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/configstore_entries#manage_entries-1) | Optional | `false`                                                 |
 
-### 2. Deploy your Terraform changes
+### 3. Deploy your Terraform changes
 
 1. Initialize the Terraform module
 
@@ -110,7 +111,7 @@ You can see the full list of the Terraform module's variables below:
     ```shell
     terraform apply
     ```
-### 3. Add the proxy secret to your Fastly Secret Store
+### 4. Add the proxy secret to your Fastly Secret Store
 
 1. Using the [Fastly web interface](https://manage.fastly.com/compute), open the Secret Store created for your service by Terraform. It will be named `Fingerprint_Compute_Secret_Store_<SERVICE_ID>`.
 2. Add a `PROXY_SECRET` item with your Fingerprint proxy secret as the value.
