@@ -1,3 +1,10 @@
+## [1.0.0-rc.2](https://github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2025-08-05)
+
+
+### Features
+
+* add variable manage_fastly_config_store_entries ([760f4cd](https://github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration/commit/760f4cd2c3ea6f41eaceb934eface98ac0bbefb6))
+
 ## 1.0.0-rc.1 (2025-07-23)
 
 
