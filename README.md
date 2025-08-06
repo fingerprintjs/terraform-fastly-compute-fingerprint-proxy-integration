@@ -56,7 +56,7 @@ terraform {
 }
 
 module "fingerprint_fastly_compute_integration" {
-  source                     = "github.com/fingerprintjs/temp-fastly-compute-terraform"
+  source                     = "fingerprintjs/compute-fingerprint-proxy-integration/fastly"
   fastly_api_token           = "FASTLY_API_TOKEN"
   service_id                 = "EMPTY_FASTLY_COMPUTE_SERVICE_ID"
   agent_script_download_path = "AGENT_SCRIPT_DOWNLOAD_PATH"
