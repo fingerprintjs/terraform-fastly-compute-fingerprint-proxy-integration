@@ -57,7 +57,6 @@ terraform {
 
 module "fingerprint_fastly_compute_integration" {
   source                     = "fingerprintjs/compute-fingerprint-proxy-integration/fastly"
-  version                    = "~> 1.0" 
   fastly_api_token           = "FASTLY_API_TOKEN"
   service_id                 = "EMPTY_FASTLY_COMPUTE_SERVICE_ID"
   agent_script_download_path = "AGENT_SCRIPT_DOWNLOAD_PATH"
@@ -84,32 +83,6 @@ You can see the full list of the Terraform module's variables below:
 | `fpjs_backend_url`                   | Domain for Ingress endpoint & browser cache endpoint                                                                                                                                           | Optional | `"api.fpjs.io"`                                         |
 | `fpjs_cdn_url`                       | Domain for Agent Script                                                                                                                                                                        | Optional | `"fpcdn.io"`                                            |
 | `manage_fastly_config_store_entries` | Manage Fastly Config Store entries via terraform, see [Fastly documentation](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/configstore_entries#manage_entries-1) | Optional | `false`                                                 |
-
-### Using Release Candidates (Optional)
-
-To use a release candidate version of the module, specify it explicitly in the version field:
-
-```terraform
-module "fingerprint_fastly_compute_integration" {
-   source  = "fingerprintjs/compute-fingerprint-proxy-integration/fastly"
-   version = "1.0.0-rc.1"
-   # Other module inputs
-}
-```
-
-Alternatively, you can point directly to the GitHub repository and use a branch (e.g., `rc`) via the ref parameter.
-This ensures you're always using the latest commit from that branch:
-
-```terraform
-module "fingerprint_fastly_compute_integration" {
-   source = "github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration?ref=rc"
-   # Other module inputs
-}
-```
-
-> [!WARNING]   
-> Using a GitHub source with `ref` disables version locking and may result in unexpected changes when the branch is updated.
-> Recommended for development or testing only.
 
 ### 3. Deploy your Terraform changes
 

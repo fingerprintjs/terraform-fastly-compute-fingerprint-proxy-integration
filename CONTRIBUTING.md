@@ -54,3 +54,25 @@ module "fingerprint_fastly_compute_integration" {
   fpjs_cdn_url = "procdn.fpjs.sh" # <- Update CDN origin here
 }
 ```
+
+## Using Release Candidates
+
+To use a release candidate version of the module, specify it explicitly in the version field:
+
+```terraform
+module "fingerprint_fastly_compute_integration" {
+   source  = "fingerprintjs/compute-fingerprint-proxy-integration/fastly"
+   version = "1.0.0-rc.1"
+   # Other module inputs
+}
+```
+
+Alternatively, you can point directly to the GitHub repository and use a branch (e.g., `rc`) via the ref parameter.
+This ensures you're always using the latest commit from that branch:
+
+```terraform
+module "fingerprint_fastly_compute_integration" {
+   source = "github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration?ref=rc"
+   # Other module inputs
+}
+```
