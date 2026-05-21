@@ -17,6 +17,13 @@ variable "integration_domain" {
   type = string
 }
 
+variable "integration_name" {
+  description = "Service name used for your proxy integration"
+  type = string
+  default = "fingerprint-fastly-compute-proxy-integration"
+  nullable = false
+}
+
 variable "service_id" {
   description = "ID of your empty Fastly Compute service"
   type = string
@@ -24,4 +31,14 @@ variable "service_id" {
 
 variable "fastly_api_token" {
   type = string
+}
+
+variable "compute_asset_name" {
+  type    = string
+  default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+}
+
+variable "download_asset" {
+  type = bool
+  default = true
 }
