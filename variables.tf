@@ -47,18 +47,20 @@ variable "fastly_api_token" {
 
 variable "agent_script_download_path" {
   type = string
-  nullable = false
+  default = null
+  nullable = true
   validation {
-    condition     = can(regex("^([a-zA-Z0-9\\-])+$", var.agent_script_download_path))
+    condition     = var.agent_script_download_path == null || can(regex("^([a-zA-Z0-9\\-])+$", var.agent_script_download_path))
     error_message = "value should only consist of alphanumeric values and dashes"
   }
 }
 
 variable "get_result_path" {
   type = string
-  nullable = false
+  default = null
+  nullable = true
   validation {
-    condition     = can(regex("^([a-zA-Z0-9\\-])+$", var.get_result_path))
+    condition     = var.get_result_path == null || can(regex("^([a-zA-Z0-9\\-])+$", var.get_result_path))
     error_message = "value should only consist of alphanumeric values and dashes"
   }
 }
@@ -70,7 +72,7 @@ variable "asset_repository_organization_name" {
 
 variable "asset_repository_name" {
   type    = string
-  default = "fingerprint-pro-fastly-compute-proxy-integration"
+  default = "fastly-compute-proxy"
 }
 
 variable "asset_version" {
@@ -95,11 +97,6 @@ variable "download_asset" {
 variable "fpjs_backend_url" {
   type = string
   default = "api.fpjs.io"
-}
-
-variable "fpjs_cdn_url" {
-  type = string
-  default = "fpcdn.io"
 }
 
 variable "kv_store_enabled" {
