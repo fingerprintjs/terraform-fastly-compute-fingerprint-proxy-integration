@@ -1,0 +1,19 @@
+{
+  "name": "@fingerprint/terraform-fastly-compute-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "author": "FingerprintJS, Inc (https://fingerprint.com)",
+  "description": "Terraform module for Fingerprint Fastly Compute Proxy Integration",
+  "scripts": {
+    "prepare-package": "bash scripts/preparePackage.sh",
+    "prechangeset:publish": "pnpm prepare-package",
+    "prechangeset:version": "pnpm prepare-package",
+    "changeset:publish": "changeset publish",
+    "changeset:version": "changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.30.0",
+    "@fingerprintjs/changesets-changelog-format": "^0.2.0"
+  },
+  "license": "MIT"
+}
