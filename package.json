@@ -7,7 +7,6 @@
   "scripts": {
     "prepare-package": "bash scripts/preparePackage.sh",
     "prechangeset:publish": "pnpm prepare-package",
-    "prechangeset:version": "pnpm prepare-package",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version"
   },
