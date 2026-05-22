@@ -6,7 +6,7 @@ variable "agent_script_download_path" {
 }
 
 variable "get_result_path" {
-  description = "The Fingerprint agent download will be proxied through this path"
+  description = "The Fingerprint identification / get-result requests will be proxied through this path"
   type = string
   nullable = true
   default = null
