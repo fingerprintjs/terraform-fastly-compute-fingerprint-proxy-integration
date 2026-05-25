@@ -107,13 +107,36 @@ variable "kv_store_enabled" {
 variable "kv_store_save_plugin_enabled" {
   type = string
   default = "false"
+  description = "Deprecated: Use kv_store_save_sealed_result_plugin_enabled instead. Enables plugin to save sealed result to KV store."
   validation {
     condition = var.kv_store_save_plugin_enabled == "true" || var.kv_store_save_plugin_enabled == "false"
     error_message = "The kv_store_save_plugin_enabled variable should either string `true` or string `false`"
   }
 }
 
+variable "kv_store_save_sealed_result_plugin_enabled" {
+  type = string
+  default = null
+  nullable = true
+  description = "Enables plugin to save sealed result to KV store. Takes precedence over kv_store_save_plugin_enabled."
+  validation {
+    condition = var.kv_store_save_sealed_result_plugin_enabled == null || var.kv_store_save_sealed_result_plugin_enabled == "true" || var.kv_store_save_sealed_result_plugin_enabled == "false"
+    error_message = "The kv_store_save_sealed_result_plugin_enabled variable should either string `true`, string `false`, or null"
+  }
+}
+
+variable "kv_store_save_event_plugin_enabled" {
+  type = string
+  default = "false"
+  description = "Enables plugin to save events to KV store."
+  validation {
+    condition = var.kv_store_save_event_plugin_enabled == "true" || var.kv_store_save_event_plugin_enabled == "false"
+    error_message = "The kv_store_save_event_plugin_enabled variable should either string `true` or string `false`"
+  }
+}
+
 variable "kv_store_prefix" {
   type = string
   default = "Fingerprint_Results_"
+  description = "Deprecated: Prefix for the sealed result KV store name. Will be hardcoded in a future version."
 }
