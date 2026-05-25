@@ -42,12 +42,12 @@ module "compute_asset" {
 }
 
 resource "fastly_kvstore" "integration_kv_store" {
-  count = var.kv_store_enabled ? 1 : 0
+  count = (var.kv_store_enabled || local.kv_store_sealed_result_plugin_enabled == "true") ? 1 : 0
   name  = local.kv_store_sealed_result_name
 }
 
 resource "fastly_kvstore" "integration_event_kv_store" {
-  count = var.kv_store_enabled ? 1 : 0
+  count = local.kv_store_event_plugin_enabled == "true" ? 1 : 0
   name  = local.kv_store_event_name
 }
 
@@ -126,7 +126,7 @@ resource "fastly_service_compute" "fingerprint_integration" {
   }
 
   dynamic "resource_link" {
-    for_each = var.kv_store_enabled ? [0] : []
+    for_each = (var.kv_store_enabled || local.kv_store_sealed_result_plugin_enabled == "true") ? [0] : []
     content {
       name        = local.kv_store_sealed_result_name
       resource_id = fastly_kvstore.integration_kv_store[0].id
@@ -134,7 +134,7 @@ resource "fastly_service_compute" "fingerprint_integration" {
   }
 
   dynamic "resource_link" {
-    for_each = var.kv_store_enabled ? [0] : []
+    for_each = local.kv_store_event_plugin_enabled == "true" ? [0] : []
     content {
       name        = local.kv_store_event_name
       resource_id = fastly_kvstore.integration_event_kv_store[0].id

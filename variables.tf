@@ -102,6 +102,7 @@ variable "fpjs_backend_url" {
 variable "kv_store_enabled" {
   type = bool
   default = false
+  description = "Deprecated: Use kv_store_save_sealed_result_plugin_enabled and kv_store_save_event_plugin_enabled instead. Will be removed in a future version."
 }
 
 variable "kv_store_save_plugin_enabled" {
