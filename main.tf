@@ -15,18 +15,16 @@ provider "fastly" {
 locals {
   asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
   asset_hash = try(filebase64sha512(local.asset_path), "")
-  config_store_name       = "${var.config_store_prefix}${var.service_id}"
-  secret_store_name       = "${var.secret_store_prefix}${var.service_id}"
-  kv_store_sealed_result_name           = "${var.kv_store_prefix}${var.service_id}"
-  kv_store_event_name                   = "Fingerprint_Events_${var.service_id}"
-  kv_store_sealed_result_plugin_enabled = var.kv_store_enabled ? coalesce(var.kv_store_save_sealed_result_plugin_enabled, var.kv_store_save_plugin_enabled) : "false"
-  kv_store_event_plugin_enabled         = var.kv_store_enabled ? var.kv_store_save_event_plugin_enabled : "false"
+  config_store_name    = "${var.config_store_prefix}${var.service_id}"
+  secret_store_name    = "${var.secret_store_prefix}${var.service_id}"
+  kv_store_name        = "${var.kv_store_prefix}${var.service_id}"
+  kv_store_plugin_enabled = var.kv_store_enabled ? var.kv_store_save_plugin_enabled : "false"
   config_store_entries = {
     for key, value in {
-      AGENT_SCRIPT_DOWNLOAD_PATH                    = var.agent_script_download_path
-      GET_RESULT_PATH                               = var.get_result_path
-      SAVE_SEALED_RESULT_TO_KV_STORE_PLUGIN_ENABLED = local.kv_store_sealed_result_plugin_enabled != "false" ? local.kv_store_sealed_result_plugin_enabled : null
-      SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED         = local.kv_store_event_plugin_enabled != "false" ? local.kv_store_event_plugin_enabled : null
+      AGENT_SCRIPT_DOWNLOAD_PATH           = var.agent_script_download_path
+      GET_RESULT_PATH                      = var.get_result_path
+      SAVE_TO_KV_STORE_PLUGIN_ENABLED      = local.kv_store_plugin_enabled != "false" ? local.kv_store_plugin_enabled : null
+      OPEN_CLIENT_RESPONSE_PLUGINS_ENABLED = local.kv_store_plugin_enabled != "false" ? local.kv_store_plugin_enabled : null
     } : key => value if value != null
   }
 }
@@ -42,13 +40,8 @@ module "compute_asset" {
 }
 
 resource "fastly_kvstore" "integration_kv_store" {
-  count = (var.kv_store_enabled || local.kv_store_sealed_result_plugin_enabled == "true") ? 1 : 0
-  name  = local.kv_store_sealed_result_name
-}
-
-resource "fastly_kvstore" "integration_event_kv_store" {
-  count = local.kv_store_event_plugin_enabled == "true" ? 1 : 0
-  name  = local.kv_store_event_name
+  count = (var.kv_store_enabled || local.kv_store_plugin_enabled == "true") ? 1 : 0
+  name  = local.kv_store_name
 }
 
 resource "fastly_configstore" "integration_config_store" {
@@ -126,18 +119,10 @@ resource "fastly_service_compute" "fingerprint_integration" {
   }
 
   dynamic "resource_link" {
-    for_each = (var.kv_store_enabled || local.kv_store_sealed_result_plugin_enabled == "true") ? [0] : []
+    for_each = (var.kv_store_enabled || local.kv_store_plugin_enabled == "true") ? [0] : []
     content {
-      name        = local.kv_store_sealed_result_name
+      name        = local.kv_store_name
       resource_id = fastly_kvstore.integration_kv_store[0].id
-    }
-  }
-
-  dynamic "resource_link" {
-    for_each = local.kv_store_event_plugin_enabled == "true" ? [0] : []
-    content {
-      name        = local.kv_store_event_name
-      resource_id = fastly_kvstore.integration_event_kv_store[0].id
     }
   }
 

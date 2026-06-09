@@ -102,37 +102,16 @@ variable "fpjs_backend_url" {
 variable "kv_store_enabled" {
   type = bool
   default = false
-  description = "Deprecated: Use kv_store_save_sealed_result_plugin_enabled and kv_store_save_event_plugin_enabled instead. Will be removed in a future version."
+  description = "Deprecated: Use kv_store_save_plugin_enabled instead. Will be removed in a future version."
 }
 
 variable "kv_store_save_plugin_enabled" {
   type = string
   default = "false"
-  description = "Deprecated: Use kv_store_save_sealed_result_plugin_enabled instead. Enables plugin to save sealed result to KV store."
+  description = "Enables the processOpenClientResponse plugin to save results to KV store."
   validation {
     condition = var.kv_store_save_plugin_enabled == "true" || var.kv_store_save_plugin_enabled == "false"
     error_message = "The kv_store_save_plugin_enabled variable should either string `true` or string `false`"
-  }
-}
-
-variable "kv_store_save_sealed_result_plugin_enabled" {
-  type = string
-  default = null
-  nullable = true
-  description = "Enables plugin to save sealed result to KV store. Takes precedence over kv_store_save_plugin_enabled."
-  validation {
-    condition = var.kv_store_save_sealed_result_plugin_enabled == null || var.kv_store_save_sealed_result_plugin_enabled == "true" || var.kv_store_save_sealed_result_plugin_enabled == "false"
-    error_message = "The kv_store_save_sealed_result_plugin_enabled variable should either string `true`, string `false`, or null"
-  }
-}
-
-variable "kv_store_save_event_plugin_enabled" {
-  type = string
-  default = "false"
-  description = "Enables plugin to save events to KV store."
-  validation {
-    condition = var.kv_store_save_event_plugin_enabled == "true" || var.kv_store_save_event_plugin_enabled == "false"
-    error_message = "The kv_store_save_event_plugin_enabled variable should either string `true` or string `false`"
   }
 }
 
