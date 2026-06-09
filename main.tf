@@ -18,13 +18,12 @@ locals {
   config_store_name    = "${var.config_store_prefix}${var.service_id}"
   secret_store_name    = "${var.secret_store_prefix}${var.service_id}"
   kv_store_name        = "${var.kv_store_prefix}${var.service_id}"
-  kv_store_plugin_enabled = var.kv_store_enabled ? var.kv_store_save_plugin_enabled : "false"
   config_store_entries = {
     for key, value in {
       AGENT_SCRIPT_DOWNLOAD_PATH           = var.agent_script_download_path
       GET_RESULT_PATH                      = var.get_result_path
-      SAVE_TO_KV_STORE_PLUGIN_ENABLED      = local.kv_store_plugin_enabled != "false" ? local.kv_store_plugin_enabled : null
-      OPEN_CLIENT_RESPONSE_PLUGINS_ENABLED = local.kv_store_plugin_enabled != "false" ? local.kv_store_plugin_enabled : null
+      SAVE_TO_KV_STORE_PLUGIN_ENABLED      = var.kv_store_enabled ? "true" : null
+      OPEN_CLIENT_RESPONSE_PLUGINS_ENABLED = var.kv_store_enabled ? "true" : null
     } : key => value if value != null
   }
 }
@@ -40,7 +39,7 @@ module "compute_asset" {
 }
 
 resource "fastly_kvstore" "integration_kv_store" {
-  count = (var.kv_store_enabled || local.kv_store_plugin_enabled == "true") ? 1 : 0
+  count = var.kv_store_enabled ? 1 : 0
   name  = local.kv_store_name
 }
 
@@ -119,7 +118,7 @@ resource "fastly_service_compute" "fingerprint_integration" {
   }
 
   dynamic "resource_link" {
-    for_each = (var.kv_store_enabled || local.kv_store_plugin_enabled == "true") ? [0] : []
+    for_each = var.kv_store_enabled ? [0] : []
     content {
       name        = local.kv_store_name
       resource_id = fastly_kvstore.integration_kv_store[0].id

@@ -102,17 +102,7 @@ variable "fpjs_backend_url" {
 variable "kv_store_enabled" {
   type = bool
   default = false
-  description = "Deprecated: Use kv_store_save_plugin_enabled instead. Will be removed in a future version."
-}
-
-variable "kv_store_save_plugin_enabled" {
-  type = string
-  default = "false"
   description = "Enables the processOpenClientResponse plugin to save results to KV store."
-  validation {
-    condition = var.kv_store_save_plugin_enabled == "true" || var.kv_store_save_plugin_enabled == "false"
-    error_message = "The kv_store_save_plugin_enabled variable should either string `true` or string `false`"
-  }
 }
 
 variable "kv_store_prefix" {
