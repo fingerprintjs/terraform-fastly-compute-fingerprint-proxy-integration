@@ -50,8 +50,7 @@ To test terraform module using Fingerprint's staging environment, you can alter 
 ```terraform
 module "fingerprint_fastly_compute_integration" {
   # ...
-  fpjs_backend_url = "api.stage.fpjs.sh" # <- Update Ingress origin here
-  fpjs_cdn_url = "procdn.fpjs.sh" # <- Update CDN origin here
+  fpjs_backend_url = "api.stage.fpjs.sh" # <- Update origin here
 }
 ```
 

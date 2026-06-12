@@ -15,10 +15,17 @@ provider "fastly" {
 locals {
   asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
   asset_hash = try(filebase64sha512(local.asset_path), "")
-  config_store_name       = "${var.config_store_prefix}${var.service_id}"
-  secret_store_name       = "${var.secret_store_prefix}${var.service_id}"
-  kv_store_name           = "${var.kv_store_prefix}${var.service_id}"
-  kv_store_plugin_enabled = var.kv_store_enabled ? var.kv_store_save_plugin_enabled : "false"
+  config_store_name    = "${var.config_store_prefix}${var.service_id}"
+  secret_store_name    = "${var.secret_store_prefix}${var.service_id}"
+  kv_store_name        = "${var.kv_store_prefix}${var.service_id}"
+  config_store_entries = {
+    for key, value in {
+      AGENT_SCRIPT_DOWNLOAD_PATH           = var.agent_script_download_path
+      GET_RESULT_PATH                      = var.get_result_path
+      SAVE_TO_KV_STORE_PLUGIN_ENABLED      = var.kv_store_enabled ? "true" : null
+      OPEN_CLIENT_RESPONSE_PLUGINS_ENABLED = var.kv_store_enabled ? "true" : null
+    } : key => value if value != null
+  }
 }
 
 module "compute_asset" {
@@ -37,17 +44,15 @@ resource "fastly_kvstore" "integration_kv_store" {
 }
 
 resource "fastly_configstore" "integration_config_store" {
-  name = local.config_store_name
+  count = length(local.config_store_entries) > 0 ? 1 : 0
+  name  = local.config_store_name
 }
 
 resource "fastly_configstore_entries" "integration_config_store_entries" {
-  store_id = fastly_configstore.integration_config_store.id
+  count          = length(local.config_store_entries) > 0 ? 1 : 0
+  store_id       = fastly_configstore.integration_config_store[0].id
   manage_entries = var.manage_fastly_config_store_entries
-  entries = {
-    AGENT_SCRIPT_DOWNLOAD_PATH      = var.agent_script_download_path
-    GET_RESULT_PATH                 = var.get_result_path
-    SAVE_TO_KV_STORE_PLUGIN_ENABLED = local.kv_store_plugin_enabled
-  }
+  entries        = local.config_store_entries
 }
 
 resource "fastly_secretstore" "integration_secret_store" {
@@ -99,20 +104,12 @@ resource "fastly_service_compute" "fingerprint_integration" {
     port              = 443
   }
 
-  backend {
-    address           = var.fpjs_cdn_url
-    name              = var.fpjs_cdn_url
-    override_host     = var.fpjs_cdn_url
-    prefer_ipv6       = false
-    use_ssl           = true
-    ssl_cert_hostname = var.fpjs_cdn_url
-    ssl_sni_hostname  = var.fpjs_cdn_url
-    port              = 443
-  }
-
-  resource_link {
-    name        = local.config_store_name
-    resource_id = fastly_configstore.integration_config_store.id
+  dynamic "resource_link" {
+    for_each = length(local.config_store_entries) > 0 ? [0] : []
+    content {
+      name        = local.config_store_name
+      resource_id = fastly_configstore.integration_config_store[0].id
+    }
   }
 
   resource_link {
@@ -131,8 +128,8 @@ resource "fastly_service_compute" "fingerprint_integration" {
   force_destroy = true
 
   depends_on = [
-    fastly_configstore.integration_config_store, fastly_configstore_entries.integration_config_store_entries,
-    fastly_secretstore.integration_secret_store
+    fastly_secretstore.integration_secret_store,
+    fastly_configstore_entries.integration_config_store_entries
   ]
 }
 
