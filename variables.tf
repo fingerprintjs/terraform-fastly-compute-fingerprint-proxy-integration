@@ -99,14 +99,3 @@ variable "fpjs_backend_url" {
   default = "api.fpjs.io"
 }
 
-variable "kv_store_enabled" {
-  type = bool
-  default = false
-  description = "Enables the processOpenClientResponse plugin to save results to KV store."
-}
-
-variable "kv_store_prefix" {
-  type = string
-  default = "Fingerprint_Results_"
-  description = "Deprecated: Prefix for the sealed result KV store name. Will be hardcoded in a future version."
-}
