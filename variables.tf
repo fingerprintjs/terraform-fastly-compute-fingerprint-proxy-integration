@@ -99,3 +99,15 @@ variable "fpjs_backend_url" {
   default = "api.fpjs.io"
 }
 
+variable "kv_store_enabled" {
+  type        = bool
+  default     = false
+  description = "Deprecated: No-op. KV store plugin system has been removed in v4."
+}
+
+variable "kv_store_prefix" {
+  type        = string
+  default     = "Fingerprint_Results_"
+  description = "Deprecated: No-op. KV store plugin system has been removed in v4."
+}
+
