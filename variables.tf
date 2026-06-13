@@ -99,12 +99,14 @@ variable "fpjs_backend_url" {
   default = "api.fpjs.io"
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "kv_store_enabled" {
   type        = bool
   default     = false
   description = "Deprecated: No-op. KV store plugin system has been removed."
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "kv_store_prefix" {
   type        = string
   default     = "Fingerprint_Results_"
