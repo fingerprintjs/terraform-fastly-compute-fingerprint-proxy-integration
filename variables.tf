@@ -102,12 +102,12 @@ variable "fpjs_backend_url" {
 variable "kv_store_enabled" {
   type        = bool
   default     = false
-  description = "Deprecated: No-op. KV store plugin system has been removed in v4."
+  description = "Deprecated: No-op. KV store plugin system has been removed."
 }
 
 variable "kv_store_prefix" {
   type        = string
   default     = "Fingerprint_Results_"
-  description = "Deprecated: No-op. KV store plugin system has been removed in v4."
+  description = "Deprecated: No-op. KV store plugin system has been removed."
 }
 
