@@ -18,6 +18,11 @@ locals {
   config_store_name    = "${var.config_store_prefix}${var.service_id}"
   secret_store_name    = "${var.secret_store_prefix}${var.service_id}"
   kv_store_name        = "${var.kv_store_prefix}${var.service_id}"
+  fingerprint_backend_address = var.region == null ? null : {
+    us = var.fpjs_backend_url
+    eu = "eu.${var.fpjs_backend_url}"
+    ap = "ap.${var.fpjs_backend_url}"
+  }[var.region]
   config_store_entries = {
     for key, value in {
       AGENT_SCRIPT_DOWNLOAD_PATH           = var.agent_script_download_path
@@ -71,37 +76,36 @@ resource "fastly_service_compute" "fingerprint_integration" {
     source_code_hash = local.asset_hash
   }
 
-  backend {
-    address           = var.fpjs_backend_url
-    name              = var.fpjs_backend_url
-    override_host     = var.fpjs_backend_url
-    prefer_ipv6       = false
-    use_ssl           = true
-    ssl_cert_hostname = var.fpjs_backend_url
-    ssl_sni_hostname  = var.fpjs_backend_url
-    port              = 443
+  dynamic "backend" {
+    for_each = var.region != null ? [local.fingerprint_backend_address] : []
+    content {
+      address           = backend.value
+      name              = "fingerprint"
+      override_host     = backend.value
+      prefer_ipv6       = false
+      use_ssl           = true
+      ssl_cert_hostname = backend.value
+      ssl_sni_hostname  = backend.value
+      port              = 443
+    }
   }
 
-  backend {
-    address           = "eu.${var.fpjs_backend_url}"
-    name              = "eu.${var.fpjs_backend_url}"
-    override_host     = "eu.${var.fpjs_backend_url}"
-    prefer_ipv6       = false
-    use_ssl           = true
-    ssl_cert_hostname = "eu.${var.fpjs_backend_url}"
-    ssl_sni_hostname  = "eu.${var.fpjs_backend_url}"
-    port              = 443
-  }
-
-  backend {
-    address           = "ap.${var.fpjs_backend_url}"
-    name              = "ap.${var.fpjs_backend_url}"
-    override_host     = "ap.${var.fpjs_backend_url}"
-    prefer_ipv6       = false
-    use_ssl           = true
-    ssl_cert_hostname = "ap.${var.fpjs_backend_url}"
-    ssl_sni_hostname  = "ap.${var.fpjs_backend_url}"
-    port              = 443
+  dynamic "backend" {
+    for_each = var.region == null ? [
+      var.fpjs_backend_url,
+      "eu.${var.fpjs_backend_url}",
+      "ap.${var.fpjs_backend_url}",
+    ] : []
+    content {
+      address           = backend.value
+      name              = backend.value
+      override_host     = backend.value
+      prefer_ipv6       = false
+      use_ssl           = true
+      ssl_cert_hostname = backend.value
+      ssl_sni_hostname  = backend.value
+      port              = 443
+    }
   }
 
   dynamic "resource_link" {
@@ -133,3 +137,9 @@ resource "fastly_service_compute" "fingerprint_integration" {
   ]
 }
 
+check "region_not_set" {
+  assert {
+    condition     = var.region != null
+    error_message = "The region variable is not set. Legacy regional backends (us/eu/ap) are deprecated and will be removed in a future version. Set region to one of: us, eu, ap."
+  }
+}

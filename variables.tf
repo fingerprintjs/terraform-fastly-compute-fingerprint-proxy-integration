@@ -99,6 +99,17 @@ variable "fpjs_backend_url" {
   default = "api.fpjs.io"
 }
 
+variable "region" {
+  type     = string
+  default  = null
+  nullable = true
+  description = "Region for the Fingerprint API. One of: us, eu, ap. When set, a single 'fingerprint' backend is created for that region. When null, the legacy regional backends are used."
+  validation {
+    condition     = var.region == null || contains(["us", "eu", "ap"], var.region)
+    error_message = "region must be one of: us, eu, ap"
+  }
+}
+
 variable "kv_store_enabled" {
   type = bool
   default = false
