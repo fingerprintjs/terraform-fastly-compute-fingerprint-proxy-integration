@@ -110,14 +110,17 @@ variable "region" {
   }
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "kv_store_enabled" {
-  type = bool
-  default = false
-  description = "Enables the processOpenClientResponse plugin to save results to KV store."
+  type        = bool
+  default     = false
+  description = "Deprecated: No-op. KV store plugin system has been removed."
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "kv_store_prefix" {
-  type = string
-  default = "Fingerprint_Results_"
-  description = "Deprecated: Prefix for the sealed result KV store name. Will be hardcoded in a future version."
+  type        = string
+  default     = "Fingerprint_Results_"
+  description = "Deprecated: No-op. KV store plugin system has been removed."
 }
+
