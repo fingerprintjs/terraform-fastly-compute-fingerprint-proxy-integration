@@ -1,7 +1,6 @@
 fastly_api_token = "" # Your Fastly API Token comes here
 integration_domain = "metrics.mydomain.com" # Set here to the subdomain you have chosen for the integration, for example metrics.yourwebsite.com. Avoid terms commonly blocked by ad blockers like fingerprint, fpjs, etc.
-integration_path = "" # Main path to serve this proxy integration from. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
+service_id = "" # Your empty Fastly Compute service ID
+# Optional: only needed for JS Agent v3 support
 agent_script_download_path = "" # Fingerprint Javascript Agent download path. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
 get_result_path = "" # Fingerprint Identification endpoint path. Please use random string minimum 6 characters long, no special characters like `w2kz84h`
-kv_store_enabled = true # Enable KV Store service deployment
-kv_store_save_plugin_enabled = "true" # Enable Fingerprint's builtin KV Store Open Client Response plugin
