@@ -42,3 +42,9 @@ variable "download_asset" {
   type = bool
   default = true
 }
+
+variable "region" {
+  type     = string
+  default  = null
+  nullable = true
+}
