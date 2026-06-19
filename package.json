@@ -5,8 +5,6 @@
   "author": "FingerprintJS, Inc (https://fingerprint.com)",
   "description": "Terraform module for Fingerprint Fastly Compute Proxy Integration",
   "scripts": {
-    "prepare-package": "bash scripts/preparePackage.sh",
-    "prechangeset:publish": "pnpm prepare-package",
     "changeset:publish": "changeset publish",
     "changeset:version": "changeset version"
   },
