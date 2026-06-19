@@ -1,6 +1,6 @@
 {
   "name": "@fingerprint/terraform-fastly-compute-proxy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "author": "FingerprintJS, Inc (https://fingerprint.com)",
   "description": "Terraform module for Fingerprint Fastly Compute Proxy Integration",
