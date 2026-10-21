@@ -116,7 +116,7 @@ You can see the full list of the Terraform module's variables below:
 
 ## Using a Custom package
  
-To use your own  `.tar.gz` package instead of downloading the official release, please see [Using a custom build](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform#using-a-custom-build-optional) in the full integration guide.
+To use your own  `.tar.gz` package instead of downloading the official release, set `compute_asset_name` as described in [Step 2.3: Add and configure the Terraform module](https://docs.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step-2-3-add-and-configure-the-terraform-module) of the full integration guide.
 
 This is only necessary if you're using [Open Client Response](https://dev.fingerprint.com/docs/open-client-response).
 
