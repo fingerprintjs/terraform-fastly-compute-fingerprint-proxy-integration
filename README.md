@@ -48,16 +48,28 @@ Create and empty Fastly Compute service, for example, using the [Fastly web inte
 
 ### 2. Install the Terraform module
 
-Add the module to your Terraform file (for example, `main.tf`) and configure it with your Fastly API token, [Fingerprint proxy secret](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration#step-1-create-a-fingerprint-proxy-secret), integration domain, and other required values: 
+Add the module to your Terraform file (for example, `main.tf`) and configure it with your empty service ID, integration domain, and other required values.
+The module uses the `fastly` provider from your configuration, so configure the provider with your Fastly API token:
 
 ```terraform
 terraform {
   required_version = ">=1.5"
+  required_providers {
+    fastly = {
+      source  = "fastly/fastly"
+      version = ">= 7.1.0"
+    }
+  }
+}
+
+provider "fastly" {
+  # To use the FASTLY_API_KEY environment variable instead, leave out api_key.
+  # When api_key is set, the provider ignores FASTLY_API_KEY.
+  api_key = "FASTLY_API_TOKEN"
 }
 
 module "fingerprint_fastly_compute_integration" {
   source                     = "fingerprintjs/compute-fingerprint-proxy-integration/fastly"
-  fastly_api_token           = "FASTLY_API_TOKEN"
   service_id                 = "EMPTY_FASTLY_COMPUTE_SERVICE_ID"
   agent_script_download_path = "AGENT_SCRIPT_DOWNLOAD_PATH"
   get_result_path            = "GET_RESULT_PATH"
@@ -69,7 +81,6 @@ You can see the full list of the Terraform module's variables below:
 
 | Variable                             | Description                                                                                                                                                                                    | Required | Example                                                 |
 |--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------------------------------------------------|
-| `fastly_api_token`                   | Your Fastly API token                                                                                                                                                                          | Required | `"ABC123...xyz"`                                        |
 | `service_id`                         | ID of your empty Fastly Compute service                                                                                                                                                        | Required | `"SU1Z0isxPaozGVKXdv0eY"`                               |
 | `agent_script_download_path`         | Path to serve agent script from your domain (only when supporting JS Agent v3)                                                                                                                 | Optional | `"4fs80xgx"`                                            |
 | `get_result_path`                    | Path to serve identification and browser cache requests (only when supporting JS Agent v3)                                                                                                     | Optional | `"vpyr9bev"`                                            |
@@ -129,6 +140,16 @@ This repository also includes an example Terraform project. Use this example onl
 ## How to update
 
 The Terraform module does include any mechanism for automatic updates. To keep your integration up to date, please run `terraform apply` regularly.
+
+### Upgrading from v1 to v2
+
+v2 no longer configures the `fastly` provider itself. This lets you use the module with `count`, `for_each` and `depends_on`.
+
+1. Add a `provider "fastly"` block with your Fastly API token to your configuration, as shown in [Install the Terraform module](#2-install-the-terraform-module).
+2. Remove `fastly_api_token` from the module block.
+3. Remove `kv_store_enabled` and `kv_store_prefix` from the module block if you set them. They had no effect since v1.1.0.
+
+Your existing resources are not changed.
 
 ## More resources
 

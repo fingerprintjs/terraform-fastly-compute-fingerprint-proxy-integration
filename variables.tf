@@ -40,11 +40,6 @@ variable "secret_store_prefix" {
   }
 }
 
-variable "fastly_api_token" {
-  type = string
-  nullable = false
-}
-
 variable "agent_script_download_path" {
   type = string
   default = null
@@ -108,19 +103,5 @@ variable "region" {
     condition     = var.region == null || contains(["us", "eu", "ap"], var.region)
     error_message = "region must be one of: us, eu, ap"
   }
-}
-
-# tflint-ignore: terraform_unused_declarations
-variable "kv_store_enabled" {
-  type        = bool
-  default     = false
-  description = "Deprecated: No-op. KV store plugin system has been removed."
-}
-
-# tflint-ignore: terraform_unused_declarations
-variable "kv_store_prefix" {
-  type        = string
-  default     = "Fingerprint_Results_"
-  description = "Deprecated: No-op. KV store plugin system has been removed."
 }
 
