@@ -1,4 +1,4 @@
-fastly_api_token = "" # Your Fastly API Token comes here
+# Set the FASTLY_API_KEY environment variable to your Fastly API token
 integration_domain = "metrics.mydomain.com" # Set here to the subdomain you have chosen for the integration, for example metrics.yourwebsite.com. Avoid terms commonly blocked by ad blockers like fingerprint, fpjs, etc.
 region = "us" # Region for the Fingerprint API: us, eu, or ap
 service_id = "" # Your empty Fastly Compute service ID

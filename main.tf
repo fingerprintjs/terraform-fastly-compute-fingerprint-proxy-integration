@@ -8,10 +8,6 @@ terraform {
   }
 }
 
-provider "fastly" {
-  api_key = var.fastly_api_token
-}
-
 locals {
   asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
   asset_hash = try(filebase64sha512(local.asset_path), "")
