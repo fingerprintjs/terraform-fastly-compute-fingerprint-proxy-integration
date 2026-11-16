@@ -63,7 +63,9 @@ terraform {
 }
 
 provider "fastly" {
-  api_key = "FASTLY_API_TOKEN" # or set the FASTLY_API_KEY environment variable
+  # To use the FASTLY_API_KEY environment variable instead, leave out api_key.
+  # When api_key is set, the provider ignores FASTLY_API_KEY.
+  api_key = "FASTLY_API_TOKEN"
 }
 
 module "fingerprint_fastly_compute_integration" {
