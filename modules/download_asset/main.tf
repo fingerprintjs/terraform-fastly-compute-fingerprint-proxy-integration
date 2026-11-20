@@ -47,8 +47,10 @@ locals {
   selected_index = try([for i, tag in local.candidate_tags : i if data.http.asset_check[i].status_code == 200][0], null)
   selected_tag   = local.selected_index == null ? null : local.candidate_tags[local.selected_index]
 
-  # Relative to the root module, so the path in state is the same on every machine
-  filename = "${path.module}/downloads/${coalesce(local.selected_tag, "none")}-${var.compute_asset_name}"
+  # - Relative to the root module, so the path in state is the same on every machine
+  # - Has the repository and tag, so a different repository or release changes the path, and instances
+  #   with different repositories don't share a file
+  filename = "${path.module}/downloads/${local.repository}/${coalesce(local.selected_tag, "none")}/${var.compute_asset_name}"
 }
 
 data "http" "tags" {
@@ -85,12 +87,14 @@ data "http" "asset_check" {
   }
 }
 
-# Downloads the package when the selected release changes.
-# Instances of the module (count, for_each) share the downloads folder and can download the same file at once,
-# so each download goes to its own temp file and is renamed into place.
+# Downloads the package when the selected release or the service changes.
+# - The file can be missing, for example on a fresh CI runner. That is fine while the package doesn't change,
+#   but a new service needs an upload. A new service always has a new service_id, so service_id is a trigger too
+# - Instances of the module (count, for_each) share the downloads folder and can download the same file at once,
+#   so each download goes to its own temp file and is renamed into place
 resource "terraform_data" "download" {
   input            = local.filename
-  triggers_replace = [local.filename]
+  triggers_replace = [local.filename, var.service_id]
 
   provisioner "local-exec" {
     command = <<EOT

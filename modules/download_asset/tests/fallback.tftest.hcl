@@ -8,6 +8,10 @@ mock_provider "http" {
   }
 }
 
+variables {
+  service_id = "SERVICE_ID"
+}
+
 override_data {
   target = data.http.tags[0]
   values = {
@@ -27,7 +31,7 @@ run "latest_picks_newest_by_semver" {
     error_message = "got ${jsonencode(local.candidate_tags)}"
   }
   assert {
-    condition     = endswith(local.filename, "/downloads/v0.4.10-fingerprint-fastly-compute-proxy-integration.tar.gz")
+    condition     = endswith(local.filename, "/downloads/fingerprintjs/fastly-compute-proxy/v0.4.10/fingerprint-fastly-compute-proxy-integration.tar.gz")
     error_message = "got ${local.filename}"
   }
 }
@@ -114,4 +118,16 @@ run "fails_without_stable_tags" {
     }
   }
   expect_failures = [terraform_data.download]
+}
+
+run "repository_is_part_of_the_path" {
+  command = plan
+  variables {
+    repository_organization_name = "my-org"
+    repository_name              = "my-fork"
+  }
+  assert {
+    condition     = endswith(local.filename, "/downloads/my-org/my-fork/v0.4.10/fingerprint-fastly-compute-proxy-integration.tar.gz")
+    error_message = "got ${local.filename}"
+  }
 }

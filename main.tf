@@ -31,6 +31,7 @@ module "compute_asset" {
   compute_asset_name           = var.compute_asset_name
   repository_name              = var.asset_repository_name
   repository_organization_name = var.asset_repository_organization_name
+  service_id                   = var.service_id
 }
 
 # Hash of the files in a custom package, so the service is updated when the file content changes.
