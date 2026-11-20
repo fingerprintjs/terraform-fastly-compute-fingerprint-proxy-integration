@@ -9,8 +9,6 @@ terraform {
 }
 
 locals {
-  asset_path = "${path.cwd}/assets/${var.compute_asset_name}"
-  asset_hash = try(filebase64sha512(local.asset_path), "")
   config_store_name    = "${var.config_store_prefix}${var.service_id}"
   secret_store_name    = "${var.secret_store_prefix}${var.service_id}"
   fingerprint_backend_address = var.region == null ? null : {
@@ -27,13 +25,19 @@ locals {
 }
 
 module "compute_asset" {
-  count                        = var.download_asset ? 1 : 0
+  count                        = var.custom_package == null ? 1 : 0
   source                       = "./modules/download_asset"
   asset_version                = var.asset_version
   compute_asset_name           = var.compute_asset_name
   repository_name              = var.asset_repository_name
   repository_organization_name = var.asset_repository_organization_name
-  asset_download_path          = local.asset_path
+}
+
+# Hash of the files in a custom package, so the service is updated when the file content changes.
+# Downloaded packages don't need it: their file name changes with each release.
+data "fastly_package_hash" "custom" {
+  count    = var.custom_package == null ? 0 : 1
+  filename = var.custom_package.filename
 }
 
 resource "fastly_configstore" "integration_config_store" {
@@ -60,8 +64,8 @@ resource "fastly_service_compute" "fingerprint_integration" {
   }
 
   package {
-    filename         = local.asset_path
-    source_code_hash = local.asset_hash
+    filename         = var.custom_package == null ? module.compute_asset[0].filename : var.custom_package.filename
+    source_code_hash = var.custom_package == null ? null : data.fastly_package_hash.custom[0].hash
   }
 
   dynamic "backend" {

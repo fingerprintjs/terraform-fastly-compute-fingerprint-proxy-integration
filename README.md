@@ -86,9 +86,9 @@ You can see the full list of the Terraform module's variables below:
 | `get_result_path`                    | Path to serve identification and browser cache requests (only when supporting JS Agent v3)                                                                                                     | Optional | `"vpyr9bev"`                                            |
 | `integration_domain`                 | Domain used for your proxy integration                                                                                                                                                         | Required | `"metrics.yourdomain.com"`                              |
 | `integration_name`                   | Name of Fastly service                                                                                                                                                                         | Optional | `"fingerprint-fastly-compute-proxy-integration"`        |
-| `download_asset`                     | Whether to auto-download latest release                                                                                                                                                        | Optional | `true`                                                  |
-| `compute_asset_name`                 | Custom filename if not downloading                                                                                                                                                             | Optional | `"fingerprint-fastly-compute-proxy-integration.tar.gz"` |
-| `asset_version`                      | GitHub release version of proxy integration                                                                                                                                                    | Optional | `"latest"`                                              |
+| `compute_asset_name`                 | Name of the package asset in the GitHub release                                                                                                                                                | Optional | `"fingerprint-fastly-compute-proxy-integration.tar.gz"` |
+| `asset_version`                      | `"latest"` for the newest v0.4.x release of the Compute package, or a v0.4.x release tag to pin                                                                                                | Optional | `"v0.4.2"`                                              |
+| `custom_package`                     | Your own Compute package. When set, the module doesn't download the official package                                                                                                           | Optional | `{ filename = "custom.tar.gz" }`                        |
 | `region`                             | Region for the Fingerprint API. One of: `us`, `eu`, `ap`. When set, a single `fingerprint` backend is created. When null, legacy regional backends are used (deprecated)                       | Optional | `"eu"`                                                  |
 | `fpjs_backend_url`                   | Domain for Ingress endpoint & browser cache endpoint                                                                                                                                           | Optional | `"api.fpjs.io"`                                         |
 | `manage_fastly_config_store_entries` | Manage Fastly Config Store entries via terraform, see [Fastly documentation](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/configstore_entries#manage_entries-1) | Optional | `false`                                                 |
@@ -101,13 +101,7 @@ You can see the full list of the Terraform module's variables below:
     terraform init
     ```
 
-2. Apply the Compute Asset
-
-    ```shell
-    terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset
-    ```
-
-3. Import the Fastly service
+2. Import the Fastly service
 
     ```shell
     terraform import \
@@ -115,7 +109,7 @@ You can see the full list of the Terraform module's variables below:
       "<your empty fastly compute service id>"
     ```
 
-4. Apply the changes
+3. Apply the changes
 
     ```shell
     terraform apply
@@ -127,7 +121,16 @@ You can see the full list of the Terraform module's variables below:
 
 ## Using a Custom package
  
-To use your own  `.tar.gz` package instead of downloading the official release, set `compute_asset_name` as described in [Step 2.3: Add and configure the Terraform module](https://docs.fingerprint.com/docs/deploy-fastly-compute-using-terraform#step-2-3-add-and-configure-the-terraform-module) of the full integration guide.
+To use your own `.tar.gz` package instead of downloading the official release, pass its path in `custom_package`:
+
+```diff
+module "fingerprint_fastly_compute_integration" {
+  # ...
++ custom_package = { filename = "${path.module}/custom-package.tar.gz" }
+}
+```
+
+The service gets a new package when the content of the file changes.
 
 This is only necessary if you're using [Open Client Response](https://dev.fingerprint.com/docs/open-client-response).
 
@@ -139,7 +142,12 @@ This repository also includes an example Terraform project. Use this example onl
 
 ## How to update
 
-The Terraform module does include any mechanism for automatic updates. To keep your integration up to date, please run `terraform apply` regularly.
+To keep your integration up to date, run `terraform apply` regularly:
+
+* With `asset_version = "latest"` (the default), each plan checks the [Compute package releases](https://github.com/fingerprintjs/fastly-compute-proxy/releases) and updates your service to the newest v0.4.x release.
+* The integration is still on 0.x, where a new minor version can have breaking changes. So the module never moves to a new minor version line, for example v0.5.x. That needs a new major version of this module.
+* To stay on one release, set `asset_version` to its tag, for example `"v0.4.2"`.
+* The module downloads the package with `curl` into its own `downloads` folder only when the release changes. `terraform apply` needs `curl` on that machine.
 
 ### Upgrading from v1 to v2
 
@@ -148,8 +156,17 @@ v2 no longer configures the `fastly` provider itself. This lets you use the modu
 1. Add a `provider "fastly"` block with your Fastly API token to your configuration, as shown in [Install the Terraform module](#2-install-the-terraform-module).
 2. Remove `fastly_api_token` from the module block.
 3. Remove `kv_store_enabled` and `kv_store_prefix` from the module block if you set them. They had no effect since v1.1.0.
+4. Remove `download_asset` from the module block if you set it, with any value. If it was `false`, pass your package with `custom_package = { filename = "PATH_TO_YOUR_PACKAGE" }` instead.
+5. If you set `asset_version`, use `"latest"` or a v0.4.x release tag. Other values are rejected.
+6. Run `terraform init -upgrade`, then `terraform plan`.
 
-Your existing resources are not changed.
+The plan:
+
+* Destroys `module.compute_asset[0].null_resource.download_asset`, which only ran the v1 download script. It doesn't exist in Fastly.
+* Creates `module.compute_asset[0].terraform_data.download`, which downloads the package.
+* Updates the Fastly service: it uploads the newest v0.4.x package and activates a new service version. v1 showed this package change on every plan. After the upgrade, the plan has no changes.
+
+You can delete the `assets` folder that v1 created in your project.
 
 ## More resources
 

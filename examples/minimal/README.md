@@ -14,10 +14,9 @@ To quickly run the example for testing purposes, you can:
     ```
     The variables are defined and described in the [variables.tf](./variables.tf) file.
 3. Run `terraform init`
-4. Run `terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset`. You can safely ignore warnings about resource targeting.
-5. Run `terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "EMPTY_FASTLY_COMPUTE_SERVICE_ID"`
-6. Run `terraform apply`
-7. Add a `PROXY_SECRET` item with your Fingerprint proxy secret to the Secret Store created for your service.
+4. Run `terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "EMPTY_FASTLY_COMPUTE_SERVICE_ID"`
+5. Run `terraform apply`
+6. Add a `PROXY_SECRET` item with your Fingerprint proxy secret to the Secret Store created for your service.
 
 ### Using in production
 

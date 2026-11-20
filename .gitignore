@@ -16,3 +16,4 @@ examples/**/*.lock.hcl
 .DS_Store
 node_modules
 package.zip
+modules/download_asset/downloads

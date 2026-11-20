@@ -5,10 +5,6 @@ terraform {
       source  = "fastly/fastly"
       version = ">= 7.1.0"
     }
-    github = {
-      source  = "integrations/github"
-      version = "6.2.2"
-    }
   }
 }
 

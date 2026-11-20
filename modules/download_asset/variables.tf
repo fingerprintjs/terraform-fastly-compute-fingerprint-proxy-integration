@@ -5,20 +5,16 @@ variable "repository_organization_name" {
 
 variable "repository_name" {
   type    = string
-  default = "fingerprint-pro-fastly-compute-proxy-integration"
+  default = "fastly-compute-proxy"
 }
 
 variable "asset_version" {
-  type    = string
-  default = "latest"
+  type     = string
+  default  = "latest"
+  nullable = false
 }
 
 variable "compute_asset_name" {
   type    = string
   default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
-}
-
-variable "asset_download_path" {
-  type = string
-  nullable = false
 }

@@ -71,22 +71,28 @@ variable "asset_repository_name" {
 }
 
 variable "asset_version" {
-  type    = string
-  default = "latest"
+  type        = string
+  default     = "latest"
+  nullable    = false
+  description = "\"latest\" for the newest v0.4.x release of the Compute package, or a release tag to pin, for example \"v0.4.2\""
 }
 
 variable "compute_asset_name" {
-  type    = string
-  default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+  type        = string
+  default     = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+  description = "Name of the package asset in the GitHub release"
+}
+
+variable "custom_package" {
+  type = object({
+    filename = string
+  })
+  default     = null
+  description = "Your own Compute package, for example { filename = \"custom.tar.gz\" }. When set, the module doesn't download the official package. An object, so the module knows at plan time whether to download even when filename is only known after apply."
 }
 
 variable "service_id" {
   type = string
-}
-
-variable "download_asset" {
-  type = bool
-  default = true
 }
 
 variable "fpjs_backend_url" {
