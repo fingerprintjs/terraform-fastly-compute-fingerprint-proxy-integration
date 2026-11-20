@@ -1,3 +1,9 @@
+# Imports your empty Compute service into the Terraform state
+import {
+  to = module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration
+  id = var.service_id
+}
+
 module "fingerprint_fastly_compute_integration" {
   source = "../.."
   agent_script_download_path = var.agent_script_download_path

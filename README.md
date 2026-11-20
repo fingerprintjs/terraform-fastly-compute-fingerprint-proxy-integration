@@ -70,6 +70,7 @@ provider "fastly" {
 
 module "fingerprint_fastly_compute_integration" {
   source                     = "fingerprintjs/compute-fingerprint-proxy-integration/fastly"
+  version                    = "~> 2.0"
   service_id                 = "EMPTY_FASTLY_COMPUTE_SERVICE_ID"
   agent_script_download_path = "AGENT_SCRIPT_DOWNLOAD_PATH"
   get_result_path            = "GET_RESULT_PATH"
@@ -162,6 +163,7 @@ To keep your integration up to date, run `terraform apply` regularly:
 
 * With `asset_version = "latest"` (the default), each plan checks the [Compute package releases](https://github.com/fingerprintjs/fastly-compute-proxy/releases) and updates your service to the newest v0.4.x release.
 * The integration is still on 0.x, where a new minor version can have breaking changes. So the module never moves to a new minor version line, for example v0.5.x. That needs a new major version of this module.
+* Keep the module pinned to one major version, for example `version = "~> 2.0"`, so you move to a new major version only when you change the pin.
 * To stay on one release, set `asset_version` to its tag, for example `"v0.4.2"`.
 * The module downloads the package with `curl` into its own `downloads` folder only when the release changes. `terraform apply` needs `curl` on that machine.
 
