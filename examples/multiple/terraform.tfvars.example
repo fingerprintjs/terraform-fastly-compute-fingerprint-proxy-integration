@@ -1,0 +1,13 @@
+# Replace the values with your own. Create one empty Fastly Compute service per integration first.
+region = "us"
+
+integrations = {
+  shop = {
+    service_id         = "EMPTY-FASTLY-COMPUTE-SERVICE-ID-FOR-SHOP"
+    integration_domain = "metrics.shop.yourwebsite.com"
+  }
+  blog = {
+    service_id         = "EMPTY-FASTLY-COMPUTE-SERVICE-ID-FOR-BLOG"
+    integration_domain = "metrics.blog.yourwebsite.com"
+  }
+}

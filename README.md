@@ -93,6 +93,20 @@ You can see the full list of the Terraform module's variables below:
 | `fpjs_backend_url`                   | Domain for Ingress endpoint & browser cache endpoint                                                                                                                                           | Optional | `"api.fpjs.io"`                                         |
 | `manage_fastly_config_store_entries` | Manage Fastly Config Store entries via terraform, see [Fastly documentation](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/configstore_entries#manage_entries-1) | Optional | `false`                                                 |
 
+The module has these outputs:
+
+| Output               | Description                                                                                                 |
+|----------------------|-------------------------------------------------------------------------------------------------------------|
+| `service_id`         | ID of the Fastly Compute service                                                                            |
+| `service_name`       | Name of the Fastly Compute service                                                                          |
+| `active_version`     | Active version of the Fastly Compute service                                                                |
+| `package_version`    | Release tag of the downloaded Compute package, for example `v0.4.2`. Null when `custom_package` is set      |
+| `secret_store_id`    | ID of the Fastly Secret Store. Add the `PROXY_SECRET` item to it                                            |
+| `secret_store_name`  | Name of the Fastly Secret Store. Add the `PROXY_SECRET` item to it                                          |
+| `config_store_id`    | ID of the Fastly Config Store. Null when `agent_script_download_path` and `get_result_path` are not set     |
+| `integration_domain` | Domain of the integration, read from the service                                                            |
+| `integration_url`    | Integration URL for the JavaScript agent `endpoints` option                                                 |
+
 ### 3. Deploy your Terraform changes
 
 1. Initialize the Terraform module
@@ -139,6 +153,7 @@ This is only necessary if you're using [Open Client Response](https://dev.finger
 This repository also includes an example Terraform project. Use this example only as a reference, and make sure to follow best practices when provisioning Fastly services:
 
 - [Minimal example](./examples/minimal/)
+- [Several integrations with `for_each`](./examples/multiple/)
 
 ## How to update
 
