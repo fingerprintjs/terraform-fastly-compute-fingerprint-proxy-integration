@@ -68,13 +68,25 @@ variable "get_result_path" {
 }
 
 variable "asset_repository_organization_name" {
-  type    = string
-  default = "fingerprintjs"
+  type        = string
+  default     = "fingerprintjs"
+  nullable    = false
+  description = "GitHub organization of the repository to download the Compute package from"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.asset_repository_organization_name))
+    error_message = "value should only consist of alphanumeric values, dots, dashes and underscores"
+  }
 }
 
 variable "asset_repository_name" {
-  type    = string
-  default = "fastly-compute-proxy"
+  type        = string
+  default     = "fastly-compute-proxy"
+  nullable    = false
+  description = "GitHub repository to download the Compute package from"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.asset_repository_name))
+    error_message = "value should only consist of alphanumeric values, dots, dashes and underscores"
+  }
 }
 
 variable "asset_version" {
@@ -87,7 +99,12 @@ variable "asset_version" {
 variable "compute_asset_name" {
   type        = string
   default     = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+  nullable    = false
   description = "Name of the package asset in the GitHub release"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.compute_asset_name))
+    error_message = "value should only consist of alphanumeric values, dots, dashes and underscores"
+  }
 }
 
 variable "custom_package" {

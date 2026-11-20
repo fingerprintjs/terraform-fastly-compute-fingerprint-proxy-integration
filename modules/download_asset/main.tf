@@ -96,16 +96,21 @@ resource "terraform_data" "download" {
   input            = local.filename
   triggers_replace = [local.filename, var.service_id]
 
+  # Values go in as environment variables, never into the script, so they can't run as shell code
   provisioner "local-exec" {
     command = <<EOT
       set -e
-      dir="$(dirname "${local.filename}")"
+      dir="$(dirname "$FILENAME")"
       mkdir -p "$dir"
       tmp="$(mktemp "$dir/.download.XXXXXX")"
       trap 'rm -f "$tmp"' EXIT
-      curl -fsSL --retry 3 -o "$tmp" "${local.candidate_urls[local.selected_index]}"
-      mv -f "$tmp" "${local.filename}"
+      curl -fsSL --retry 3 -o "$tmp" "$URL"
+      mv -f "$tmp" "$FILENAME"
     EOT
+    environment = {
+      FILENAME = local.filename
+      URL      = local.candidate_urls[local.selected_index]
+    }
   }
 
   lifecycle {
