@@ -113,7 +113,7 @@ resource "fastly_service_compute" "fingerprint_integration" {
     resource_id = fastly_secretstore.integration_secret_store.id
   }
 
-  force_destroy = true
+  force_destroy = var.force_destroy
 
   depends_on = [
     fastly_secretstore.integration_secret_store,

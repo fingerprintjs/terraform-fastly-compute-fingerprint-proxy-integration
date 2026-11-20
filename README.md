@@ -92,6 +92,7 @@ You can see the full list of the Terraform module's variables below:
 | `region`                             | Region for the Fingerprint API. One of: `us`, `eu`, `ap`. When set, a single `fingerprint` backend is created. When null, legacy regional backends are used (deprecated)                       | Optional | `"eu"`                                                  |
 | `fpjs_backend_url`                   | Domain for Ingress endpoint & browser cache endpoint                                                                                                                                           | Optional | `"api.fpjs.io"`                                         |
 | `manage_fastly_config_store_entries` | Manage Fastly Config Store entries via terraform, see [Fastly documentation](https://registry.terraform.io/providers/fastly/fastly/latest/docs/resources/configstore_entries#manage_entries-1) | Optional | `false`                                                 |
+| `force_destroy`                      | Let Terraform delete the Fastly service while it is active. Set to `false` to protect the service from being deleted                                                                           | Optional | `true`                                                  |
 
 The module has these outputs:
 

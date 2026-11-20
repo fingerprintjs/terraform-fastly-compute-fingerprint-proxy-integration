@@ -13,6 +13,13 @@ variable "integration_name" {
   }
 }
 
+variable "force_destroy" {
+  type        = bool
+  default     = true
+  nullable    = false
+  description = "Let Terraform delete the Fastly service while it is active, for example on terraform destroy. Set to false to protect the service from being deleted"
+}
+
 variable "config_store_prefix" {
   type = string
   default = "Fingerprint_Compute_Config_Store_"
