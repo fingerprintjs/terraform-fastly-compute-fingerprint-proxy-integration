@@ -5,12 +5,13 @@ variable "repository_organization_name" {
 
 variable "repository_name" {
   type    = string
-  default = "fingerprint-pro-fastly-compute-proxy-integration"
+  default = "fastly-compute-proxy"
 }
 
 variable "asset_version" {
-  type    = string
-  default = "latest"
+  type     = string
+  default  = "latest"
+  nullable = false
 }
 
 variable "compute_asset_name" {
@@ -18,7 +19,7 @@ variable "compute_asset_name" {
   default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
 }
 
-variable "asset_download_path" {
-  type = string
-  nullable = false
+variable "service_id" {
+  type        = string
+  description = "ID of the Fastly Compute service the package is for. A new service_id downloads the package again, so the new service gets it even when the file is missing on this machine"
 }

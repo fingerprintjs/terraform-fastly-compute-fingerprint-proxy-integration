@@ -33,16 +33,6 @@ variable "fastly_api_token" {
   type = string
 }
 
-variable "compute_asset_name" {
-  type    = string
-  default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
-}
-
-variable "download_asset" {
-  type = bool
-  default = true
-}
-
 variable "region" {
   type     = string
   default  = null

@@ -13,6 +13,13 @@ variable "integration_name" {
   }
 }
 
+variable "force_destroy" {
+  type        = bool
+  default     = true
+  nullable    = false
+  description = "Let Terraform delete the Fastly service while it is active, for example on terraform destroy. Set to false to protect the service from being deleted"
+}
+
 variable "config_store_prefix" {
   type = string
   default = "Fingerprint_Compute_Config_Store_"
@@ -61,32 +68,55 @@ variable "get_result_path" {
 }
 
 variable "asset_repository_organization_name" {
-  type    = string
-  default = "fingerprintjs"
+  type        = string
+  default     = "fingerprintjs"
+  nullable    = false
+  description = "GitHub organization of the repository to download the Compute package from"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.asset_repository_organization_name))
+    error_message = "value should only consist of alphanumeric values, dots, dashes and underscores"
+  }
 }
 
 variable "asset_repository_name" {
-  type    = string
-  default = "fastly-compute-proxy"
+  type        = string
+  default     = "fastly-compute-proxy"
+  nullable    = false
+  description = "GitHub repository to download the Compute package from"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.asset_repository_name))
+    error_message = "value should only consist of alphanumeric values, dots, dashes and underscores"
+  }
 }
 
 variable "asset_version" {
-  type    = string
-  default = "latest"
+  type        = string
+  default     = "latest"
+  nullable    = false
+  description = "\"latest\" for the newest v0.4.x release of the Compute package, or a release tag to pin, for example \"v0.4.2\""
 }
 
 variable "compute_asset_name" {
-  type    = string
-  default = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+  type        = string
+  default     = "fingerprint-fastly-compute-proxy-integration.tar.gz"
+  nullable    = false
+  description = "Name of the package asset in the GitHub release"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.compute_asset_name))
+    error_message = "value should only consist of alphanumeric values, dots, dashes and underscores"
+  }
+}
+
+variable "custom_package" {
+  type = object({
+    filename = string
+  })
+  default     = null
+  description = "Your own Compute package, for example { filename = \"custom.tar.gz\" }. When set, the module doesn't download the official package. An object, so the module knows at plan time whether to download even when filename is only known after apply."
 }
 
 variable "service_id" {
   type = string
-}
-
-variable "download_asset" {
-  type = bool
-  default = true
 }
 
 variable "fpjs_backend_url" {

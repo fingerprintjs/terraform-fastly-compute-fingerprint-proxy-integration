@@ -1,7 +1,7 @@
 ## Minimal example for Fingerprint Fastly Compute Proxy Integration
 
-This is an example Terraform using the [Fingerprint Fastly Compute proxy integration Terraform module](https://github.com/fingerprintjs/terraform-fastly-fingerprint-compute-proxy-integration).
-Learn more in the [Fastly Compute Proxy Terraform installation guide](https://dev.fingerprint.com/docs/deploy-fastly-compute-using-terraform).
+This is an example Terraform using the [Fingerprint Fastly Compute proxy integration Terraform module](https://github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration).
+Learn more in the [Fastly Compute Proxy Terraform installation guide](https://docs.fingerprint.com/docs/deploy-fastly-compute-using-terraform).
 
 ### Running the example
 
@@ -14,10 +14,10 @@ To quickly run the example for testing purposes, you can:
     ```
     The variables are defined and described in the [variables.tf](./variables.tf) file.
 3. Run `terraform init`
-4. Run `terraform apply -target=module.fingerprint_fastly_compute_integration.module.compute_asset`. You can safely ignore warnings about resource targeting.
-5. Run `terraform import module.fingerprint_fastly_compute_integration.fastly_service_compute.fingerprint_integration "EMPTY_FASTLY_COMPUTE_SERVICE_ID"`
-6. Run `terraform apply`
-7. Add a `PROXY_SECRET` item with your Fingerprint proxy secret to the Secret Store created for your service.
+4. Run `terraform apply`. The `import` block in [fingerprint.tf](./fingerprint.tf) imports your empty service.
+5. Add a `PROXY_SECRET` item with your Fingerprint proxy secret to the Secret Store created for your service.
+
+To remove the integration, run `terraform destroy`.
 
 ### Using in production
 
@@ -25,4 +25,4 @@ This is a simplified example. Use it as a reference but make sure to **adjust th
 
 ### Additional resources
 
-- [Fingerprint Fastly Compute Proxy Integration documentation](https://dev.fingerprint.com/docs/fastly-compute-proxy-integration)
+- [Fingerprint Fastly Compute Proxy Integration documentation](https://docs.fingerprint.com/docs/fastly-compute-proxy-integration)
